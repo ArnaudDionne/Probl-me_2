@@ -1,7 +1,42 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <title>Chemical Process Calculator</title>
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+  <h1>Heat Transfer Calculator (Q = m·cp·ΔT)</h1>
+
+  <label for="mass">Mass (kg):</label>
+  <input type="number" id="mass"><br>
+
+  <label for="cp">Specific Heat (kJ/kg°C):</label>
+  <input type="number" id="cp"><br>
+
+  <label for="T1">Initial Temp (°C):</label>
+  <input type="number" id="T1"><br>
+
+  <label for="T2">Final Temp (°C):</label>
+  <input type="number" id="T2"><br>
+
+  <button onclick="calculateQ()">Calculate Heat (Q)</button>
+
+  <h2 id="result"></h2>
+
+  <script>
+    function calculateQ() {
+      const m = parseFloat(document.getElementById('mass').value);
+      const cp = parseFloat(document.getElementById('cp').value);
+      const T1 = parseFloat(document.getElementById('T1').value);
+      const T2 = parseFloat(document.getElementById('T2').value);
+
+      if (isNaN(m) || isNaN(cp) || isNaN(T1) || isNaN(T2)) {
+        document.getElementById('result').innerText = "Please fill in all fields.";
+        return;
+      }
+
+      const Q = m * cp * (T2 - T1);
+      document.getElementById('result').innerText = `Heat transfer Q = ${Q.toFixed(2)} kJ`;
+    }
+  </script>
 </body>
 </html>
