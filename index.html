@@ -27,16 +27,21 @@
       <div class="position-relative w-100" style="max-width: 1800px;">
         <img src="Procede.png" class="img-fluid w-100" alt="Schéma procédé">
 
+        <div id="outputE1"
+            class="position-absolute bg-white border p-1 rounded"
+            style="top: 4%; left: 2%; font-size: 0.8rem; min-width: 100px;">
+          Résultat: -
+        </div>   
         <!-- Output near E6 -->
         <div id="outputE6"
             class="position-absolute bg-white border p-1 rounded"
-            style="top: 18%; left: 91%; font-size: 0.8rem; min-width: 100px;">
+            style="top: 18%; left: 90%; font-size: 0.8rem; min-width: 100px;">
           Résultat: -
         </div>
 
         <div id="outputE13"
             class="position-absolute bg-white border p-1 rounded"
-            style="top: 93%; left: 2%; font-size: 0.8rem; min-width: 100px;">
+            style="top: 86%; left: 10%; font-size: 0.8rem; min-width: 100px;">
           Résultat: -
         </div>
 
@@ -199,11 +204,12 @@
         const VPM = -(-(C_total * i) / (1 - Math.pow((1 + i), -dureeProjet)));
 
         Ecoul13_heure = nbAnnees/nbHeures; // kg/h
-        Ecoul6_heure = (5.5/100)*Ecoul13_heure; // kg/h
-        
+        Ecoul6_heure = Ecoul13_heure*(1-0.4795); // kg/h
+        Ecoul1_heure = (Ecoulement_1*3600)
 
-        document.getElementById("outputE6").innerText = `PHB: ${Ecoul6_heure.toFixed(2)} kg/h`;
-        document.getElementById("outputE13").innerText = `PHB: ${Ecoul13_heure.toFixed(2)} kg/h`;
+        document.getElementById("outputE1").innerText = `Glycerol: ${Ecoul1_heure.toFixed(2)} kg/H`;
+        document.getElementById("outputE6").innerText = `PHB: ${Ecoul6_heure.toFixed(2)} kg/H`;
+        document.getElementById("outputE13").innerText = `PHB: ${Ecoul13_heure.toFixed(2)} kg/H`;
         document.getElementById("VPM").innerText = `VPM = ${VPM.toFixed(2)} $`;
 
     }
