@@ -28,19 +28,19 @@
         <h4>Procédé de production de PHB</h4>
         <div class="mb-3">
           <label class="form-label">Quantité/Années (kg/année)</label>
-          <input type="number" class="form-control" id="nbAnnees">
+          <input type="number" class="form-control" id="nbAnnees" value="200000">
         </div>
         <div class="mb-3">
           <label class="form-label">Nombre d'heures (h)</label>
-          <input type="number" class="form-control" id="nbHeures">
+          <input type="number" class="form-control" id="nbHeures" value="2000">
         </div>
         <div class="mb-3">
           <label class="form-label">Durée du projet (n)</label>
-          <input type="number" class="form-control" id="dureeProjet">
+          <input type="number" class="form-control" id="dureeProjet" value="10">
         </div>
         <div class="mb-3">
           <label class="form-label">i (%)</label>
-          <input type="number" class="form-control" id="i">
+          <input type="number" class="form-control" id="i" value="5" step="0.1">
         </div>
         <img src="Fermentation_Stage.png" class="img-fluid" alt="Chemical Diagram">
         <button class="btn btn-primary mt-2" onclick="calcul()">Calcul</button>
@@ -120,12 +120,15 @@
         const nbAnnees = parseFloat(document.getElementById('nbAnnees').value);
         const nbHeures = parseFloat(document.getElementById('nbHeures').value);
         const dureeProjet = parseFloat(document.getElementById('dureeProjet').value);
-        const i = parseFloat(document.getElementById('i').value);
+        let i = parseFloat(document.getElementById('i').value);
 
         if (isNaN(nbAnnees) || isNaN(nbHeures) || isNaN(dureeProjet) || isNaN(i)) {
             document.getElementById('result').innerText = "Remplir tous les champs l'ami";
             return;
         }
+
+        i = i / 100; // Convertir en pourcentage
+
         const FeedOutput_E13 = (nbAnnees/nbHeures)/3600;  // kg/s (C4)
 
         const Ecoulement_6 = (teo_ecoulement_6 / teo_ecoulement_15) *  FeedOutput_E13; // kg/s (C5)
@@ -169,7 +172,7 @@
         const C_fermenteur_2 = (a_fermenteur_2 + (b_fermenteur_2 * Math.pow(S_Fermenteur_2, n_fermenteur_2)))
         const C_Heater = (a_heater + (b_heater * Math.pow(S_Heater, n_heater)))
         const C_Digesteur = (a_digesteur + (b_digesteur * Math.pow(S_Digesteur, n_digesteur)))
-        const C_centrifuge = 14700*(Math.pow((Ecoulement_6 * 3600) / 1000), 0.6) 
+        const C_centrifuge = 14700*(Math.pow(((Ecoulement_6 * 3600) / 1000), 0.6))
         const C_Cuve_Lavage = (a_cuve_lavage + (b_cuve_lavage * Math.pow(S_Cuve_Lavage, n_cuve_lavage)))
         const C_Echangeur_2 = (a_echangeur_2 + (b_echangeur_2 * Math.pow(S_Echangeur_2, n_echangeur_2)))
         const C_Evaporateur = (a_evaporateur + (b_evaporateur * Math.pow(S_Evaporateur, n_evaporateur)))
@@ -177,10 +180,15 @@
 
         const C_total = C_pompe + C_Sterilisateur + C_Echangeur_1 + C_fermenteur_1 + C_fermenteur_2 + C_Heater + C_Digesteur + C_centrifuge + C_Cuve_Lavage + C_Echangeur_2 + C_Evaporateur + C_Spray_Dryer;
 
-        const VPM = -(C_total * i) / (1 - Math.pow(1 + i, -dureeProjet));
+        const VPM = -(-(C_total * i) / (1 - Math.pow((1 + i), -dureeProjet)));
 
+        console.log("FeedOutput_E13 =", FeedOutput_E13);
+        console.log("Ecoulement_6 =", Ecoulement_6);
 
-        document.getElementById('result').innerText = `VPM Test = ${C_centrifuge.toFixed(2)} $`;
+        document.getElementById('result').innerHTML =
+        `FeedOutput_E13 = ${FeedOutput_E13.toFixed(5)} kg/s<br>
+        Écoulement 6 = ${Ecoulement_6.toFixed(5)} kg/s<br>
+        <strong>VPM = ${VPM.toFixed(2)} $</strong>`;
     }
 </script>
   
