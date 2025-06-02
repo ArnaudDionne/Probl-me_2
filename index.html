@@ -39,7 +39,59 @@
     const teo_ecoulement_1 = 0.2777;  // kg/s
     const teo_ecoulement_6 = 0.2481;  // kg/s
     const teo_ecoulement_15 = 0.0134; // kg/s   
-  
+
+        // Constantes de coût d'équipement (formule : C = a * (Q/Qref)^n + b)
+    const a_pompe = 8000;
+    const b_pompe = 240;
+    const n_pompe = 0.9;
+
+    const a_sterilisateur = 80000;
+    const b_sterilisateur = 109000;
+    const n_sterilisateur = 0.8;
+
+    const a_echangeur_1 = 1600;
+    const b_echangeur_1 = 210;
+    const n_echangeur_1 = 0.95;
+
+    const a_fermenteur_1 = 61500;
+    const b_fermenteur_1 = 32500;
+    const n_fermenteur_1 = 0.8;
+
+    const a_fermenteur_2 = 61500;
+    const b_fermenteur_2 = 32500;
+    const n_fermenteur_2 = 0.8;
+
+    const a_heater = 80000;
+    const b_heater = 109000;
+    const n_heater = 0.8;
+
+    const a_digesteur = 5800;
+    const b_digesteur = 1600;
+    const n_digesteur = 0.7;
+
+    const a_cuve_lavage = 5800;
+    const b_cuve_lavage = 1600;
+    const n_cuve_lavage = 0.7;
+
+    const a_echangeur_2 = 1600;
+    const b_echangeur_2 = 210;
+    const n_echangeur_2 = 0.95;
+
+    const a_evaporateur = 88000;
+    const b_evaporateur = 65000;
+    const n_evaporateur = 0.75;
+
+    const a_sechoir_atomisation = 410000;
+    const b_sechoir_atomisation = 2200;
+    const n_sechoir_atomisation = 0.7;
+
+    const St_Echangeur_1 = 51.34 // m2
+    const St_Fermenteur_1 = 21 // m3
+    const St_Fermenteur_2 = 22.5 // m3
+    const St_Echangeur_2 = 2.95 // m2
+    const St_Evaporateur = 2.95 // m2
+    const St_Spray_Dryer = 48.5 // kg/h
+
     function calcul() {
         const nbAnnees = parseFloat(document.getElementById('nbAnnees').value);
         const nbHeures = parseFloat(document.getElementById('nbHeures').value);
@@ -50,8 +102,51 @@
             document.getElementById('result').innerText = "Remplir tous les champs l'ami";
             return;
         }
-        const FeedOutput_E13 = (nbAnnees/nbHeures)/3600;  // kg/s
-        document.getElementById('result').innerText = `Feed Output E13 Test = ${FeedOutput_E13.toFixed(2)} kg/s`;
+        const FeedOutput_E13 = (nbAnnees/nbHeures)/3600;  // kg/s (C4)
+
+        const Ecoulement_6 = (teo_ecoulement_6 / teo_ecoulement_15) *  FeedOutput_E13; // kg/s (C5)
+        const Ecoulement_1 = (teo_ecoulement_1 / teo_ecoulement_15) * FeedOutput_E13; // kg/s (C6)
+
+        // Calcul S theoriques (St)
+
+        const St_Sterilisateur = (429.31*Ecoulement_1)/1000; //MW
+        const St_Heater = (114*Ecoulement_6)/1000; //MW
+        const St_Digesteur = (Ecoulement_6 * 3600) / 1000; // m3
+        const St_Cuve_Lavage = (Ecoulement_6 * 3600) / 1000; // m3
+
+        // Calcul Ratio (S)
+        const S_pompe = Ecoulement_1
+        const S_Sterilisateur = (Ecoulement_1 * St_Sterilisateur)/teo_ecoulement_1;
+        const S_Echangeur_1 = (Ecoulement_1 * St_Echangeur_1)/teo_ecoulement_1; 
+        const S_Fermenteur_1 = (Ecoulement_1 * St_Fermenteur_1)/teo_ecoulement_1;
+        const S_Fermenteur_2 = (Ecoulement_6 * St_Fermenteur_2)/teo_ecoulement_6;
+        const S_Heater = (ecoulement1 * St_Heater)/teo_ecoulement_1;
+        const S_Digesteur = (Ecoulement_6 * St_Digesteur)/teo_ecoulement_6;
+        const S_Cuve_Lavage = (Ecoulement_6 * St_Cuve_Lavage)/teo_ecoulement_6;
+        const S_Echangeur_2 = (Ecoulement_6 * St_Echangeur_2)/teo_ecoulement_6;
+        const S_Evaporateur = (Ecoulement_6 * St_Evaporateur)/teo_ecoulement_6;
+        const S_Spray_Dryer = (FeedOutput_E13 * St_Spray_Dryer)/teo_ecoulement_15;
+
+        // Calcul Coût d'équipement (C)
+        const C_pompe = (a_pompe + ( b_pompe * Math.pow(S_pompe, n_pompe)))
+        const C_Sterilisateur = (a_sterilisateur + (b_sterilisateur * Math.pow(S_Sterilisateur, n_sterilisateur)))
+        const C_Echangeur_1 = (a_echangeur_1 + (b_echangeur_1 * Math.pow(S_Echangeur_1, n_echangeur_1)))
+        const C_fermenteur_1 = (a_fermenteur_1 + (b_fermenteur_1 * Math.pow(S_Fermenteur_1, n_fermenteur_1)))
+        const C_fermenteur_2 = (a_fermenteur_2 + (b_fermenteur_2 * Math.pow(S_Fermenteur_2, n_fermenteur_2)))
+        const C_Heater = (a_heater + (b_heater * Math.pow(S_Heater, n_heater)))
+        const C_Digesteur = (a_digesteur + (b_digesteur * Math.pow(S_Digesteur, n_digesteur)))
+        const C_centrifuge = 14700*(Math.pow((Ecoulement_6 * 3600) / 1000), 0.6) 
+        const C_Cuve_Lavage = (a_cuve_lavage + (b_cuve_lavage * Math.pow(S_Cuve_Lavage, n_cuve_lavage)))
+        const C_Echangeur_2 = (a_echangeur_2 + (b_echangeur_2 * Math.pow(S_Echangeur_2, n_echangeur_2)))
+        const C_Evaporateur = (a_evaporateur + (b_evaporateur * Math.pow(S_Evaporateur, n_evaporateur)))
+        const C_Spray_Dryer = (a_sechoir_atomisation + (b_sechoir_atomisation * Math.pow(S_Spray_Dryer, n_sechoir_atomisation)))
+
+        const C_total = C_pompe + C_Sterilisateur + C_Echangeur_1 + C_fermenteur_1 + C_fermenteur_2 + C_Heater + C_Digesteur + C_centrifuge + C_Cuve_Lavage + C_Echangeur_2 + C_Evaporateur + C_Spray_Dryer;
+
+        const VPM = -(C_total * i) / (1 - Math.pow(1 + i, -n));
+
+
+        document.getElementById('result').innerText = `VPM Test = ${VPM.toFixed(2)} $`;
     }
 </script>
   
