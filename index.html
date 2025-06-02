@@ -136,19 +136,29 @@
         const St_Sterilisateur = (429.31*Ecoulement_1)/1000; //MW
         const St_Heater = (114*Ecoulement_6)/1000; //MW
         const St_Digesteur = (Ecoulement_6 * 3600) / 1000; // m3
-        const St_Cuve_Lavage = (Ecoulement_6 * 3600) / 1000; // m3
+        const St_Cuve_Lavage = St_Digesteur; // m3
 
         // Calcul Ratio (S)
-        const S_pompe = Ecoulement_1
+        const S_pompe = Ecoulement_1;
+
         const S_Sterilisateur = (Ecoulement_1 * St_Sterilisateur)/teo_ecoulement_1;
+
         const S_Echangeur_1 = (Ecoulement_1 * St_Echangeur_1)/teo_ecoulement_1; 
+
         const S_Fermenteur_1 = (Ecoulement_1 * St_Fermenteur_1)/teo_ecoulement_1;
+
         const S_Fermenteur_2 = (Ecoulement_6 * St_Fermenteur_2)/teo_ecoulement_6;
+
         const S_Heater = (Ecoulement_1 * St_Heater)/teo_ecoulement_1;
+
         const S_Digesteur = (Ecoulement_6 * St_Digesteur)/teo_ecoulement_6;
+
         const S_Cuve_Lavage = (Ecoulement_6 * St_Cuve_Lavage)/teo_ecoulement_6;
+
         const S_Echangeur_2 = (Ecoulement_6 * St_Echangeur_2)/teo_ecoulement_6;
+
         const S_Evaporateur = (Ecoulement_6 * St_Evaporateur)/teo_ecoulement_6;
+
         const S_Spray_Dryer = (FeedOutput_E13 * St_Spray_Dryer)/teo_ecoulement_15;
 
         // Calcul Coût d'équipement (C)
@@ -170,7 +180,7 @@
         const VPM = -(C_total * i) / (1 - Math.pow(1 + i, -dureeProjet));
 
 
-        document.getElementById('result').innerText = `VPM Test = ${C_total.toFixed(2)} $`;
+        document.getElementById('result').innerText = `VPM Test = ${C_centrifuge.toFixed(2)} $`;
     }
 </script>
   
