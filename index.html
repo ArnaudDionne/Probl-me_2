@@ -170,47 +170,126 @@
           class="tab-pane fade show active"
           id="procede"
           role="tabpanel"
-          aria-labelledby="procede-tab">
+          aria-labelledby="procede-tab"
+        >
+          <!-- Image + Floating Outputs -->
           <div class="position-relative w-100" style="max-width: 1800px;">
             <img src="Procede.png" class="img-fluid w-100" alt="Schéma procédé">
 
-            <div id="outputE1"
-                 class="position-absolute bg-white border p-1 rounded"
-                 style="top: 35%; left: 1%; font-size: 0.8rem; min-width: 100px;">
+            <div
+              id="outputE1"
+              class="position-absolute bg-white border p-1 rounded"
+              style="top: 35%; left: 1%; font-size: 0.8rem; min-width: 100px;"
+            >
               Résultat: -
             </div>
-            <div id="outputE6"
-                 class="position-absolute bg-white border p-1 rounded"
-                 style="top: 35%; left: 41%; font-size: 0.8rem; min-width: 100px;">
+            <div
+              id="outputE6"
+              class="position-absolute bg-white border p-1 rounded"
+              style="top: 35%; left: 41%; font-size: 0.8rem; min-width: 100px;"
+            >
               Résultat: -
             </div>
-            <div id="outputE13"
-                 class="position-absolute bg-white border p-1 rounded"
-                 style="top: 35%; right: 7%; font-size: 0.8rem; min-width: 100px;">
+            <div
+              id="outputE13"
+              class="position-absolute bg-white border p-1 rounded"
+              style="top: 35%; right: 7%; font-size: 0.8rem; min-width: 100px;"
+            >
               Résultat: -
             </div>
-            <div id="Indice_Perfo"
-                 class="position-absolute bg-white border p-1 rounded"
-                 style="top: 80%; left: 65%; font-size: 0.8rem; min-width: 100px;">
+            <div
+              id="Indice_Perfo"
+              class="position-absolute bg-white border p-1 rounded"
+              style="top: 80%; left: 65%; font-size: 0.8rem; min-width: 100px;"
+            >
               Résultat: -
             </div>
           </div>
+
+          <div class="table-responsive mt-3">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th class="text-center align-middle"></th>
+                  <th class="text-center align-middle">Fermenteur in</th>
+                  <th class="text-center align-middle">Fermenteur out</th>
+                  <th class="text-center align-middle">Extraction in</th>
+                  <th class="text-center align-middle">Extraction out</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th class="text-center align-middle">Glycérol (kg)</th>
+                  <td id="Gly_Ferm_in" class="text-center align-middle">Gly_Ferm_in</td>
+                  <td id="Gly_Ferm_out" class="text-center align-middle">Gly_Ferm_out</td>
+                  <td id="Gly_Ext_in" class="text-center align-middle">Gly_Ext_in</td>
+                  <td id="Gly_Ext_out" class="text-center align-middle">Gly_Ext_out</td>
+                </tr>
+                <tr>
+                  <th class="text-center align-middle">PHB (kg)</th>
+                  <td id="PHB_Ferm_in" class="text-center align-middle">PHB_Ferm_in</td>
+                  <td id="PHB_Ferm_out" class="text-center align-middle">PHB_Ferm_out</td>
+                  <td id="PHB_Ext_in" class="text-center align-middle">PHB_Ext_in</td>
+                  <td id="PHB_Ext_out" class="text-center align-middle">PHB_Ext_out</td>
+                </tr>
+                <tr>
+                  <th class="text-center align-middle">Taux Conversion (%)</th>
+                  <td id="Conv_Ferm" colspan="2" class="text-center align-middle">
+                    Conv_Ferm
+                  </td>
+                  <td id="Conv_Extract" colspan="2" class="text-center align-middle">
+                    Conv_Extract
+                  </td>
+                </tr>
+                <tr>
+                  <th class="text-center align-middle">Débit massique (kg/h)</th>
+                  <td id="Debit_Ferm" colspan="2" class="text-center align-middle">
+                    Debit_Ferm
+                  </td>
+                  <td id="Debit_Extract" colspan="2" class="text-center align-middle">
+                    Debit_Extract
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Ligne séparée pour le Temps Procédé -->
+          <div class="table-responsive mt-3">
+            <table class="table table-bordered w-100">
+              <tbody>
+                <tr>
+                  <th class="text-center align-middle">Durée Procédé</th>
+                  <th class="text-center align-middle">Temps d'opération</th>
+                </tr>
+                <tr>
+                  <td id="Temps_Process" class="text-center align-middle">
+                    <!-- Valeur en heures/jours/semaines/années -->
+                    Temps_Process
+                  </td>
+                  <td id="Temps_Annee" class="text-center align-middle">
+                    <!-- Autre valeur (ex. en jours/années, etc.) -->
+                    Temps_Annee
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        <!-- ================================
+        <!-- ============================
              Tab Pane 2: Bilan Économique
-             ================================ -->
+             ============================ -->
         <div
           class="tab-pane fade"
           id="economique"
           role="tabpanel"
-          aria-labelledby="economique-tab">
-          <h4>Bilan Économique</h4>
-          <p>Graphiques lol</p>
+          aria-labelledby="economique-tab"
+        >
+          <h3>Bilan Économique</h3>
+          <p>Contenu du bilan économique ici...</p>
+          <!-- Placeholder for future content -->
         </div>
       </div>
-    </div>
-  </div>
 
   <!-- Settings Content (initially off-screen below) -->
   <div id="settingsContent">
@@ -360,7 +439,9 @@
     const out_PHB_2 = 25.6; // kg/h
     const out_PHB_1 = 49.12; // kg/h
     const in_Glycerol = 1000; // kg/h
-
+    const out_Glycerol = 0; // kg/h
+    const PHB_Ferm_in = 0; // kg/h
+    const conver_ferm = 100
     function calcul() {
 
 
@@ -384,7 +465,24 @@
       const Ecoul1 = in_Glycerol * temps_requis 
       const Ecoul6 = out_PHB_1 * temps_requis;
       const Ecoul13 = out_PHB_2 * temps_requis;
-      const Indice_Perfo = (Ecoul6 - Ecoul13) / Ecoul6;
+      const Indice_Perfo = (1-((Ecoul6 - Ecoul13) / Ecoul6))*100;
+      const Temps_Annee = formatTempsProduction(temps_requis, heures_prod);
+
+      // Affichage tableau procédé
+      document.getElementById("Gly_Ferm_in").innerText = Ecoul1.toFixed(2);
+      document.getElementById("Gly_Ferm_out").innerText = out_Glycerol.toFixed(2);
+      document.getElementById("Gly_Ext_in").innerText = out_Glycerol.toFixed(2);
+      document.getElementById("Gly_Ext_out").innerText = out_Glycerol.toFixed(2);
+      document.getElementById("PHB_Ferm_in").innerText = PHB_Ferm_in.toFixed(2);   
+      document.getElementById("PHB_Ferm_out").innerText = Ecoul6.toFixed(2);
+      document.getElementById("PHB_Ext_in").innerText = Ecoul6.toFixed(2);
+      document.getElementById("PHB_Ext_out").innerText = Ecoul13.toFixed(2);
+      document.getElementById("Conv_Ferm").innerText = conver_ferm.toFixed(2);
+      document.getElementById("Conv_Extract").innerText = Indice_Perfo.toFixed(2);
+      document.getElementById("Temps_Process").innerText = `${temps_requis.toFixed(2)} heures`;
+      document.getElementById("Temps_Annee").innerText = `${Temps_Annee}`;
+      document.getElementById("Debit_Ferm").innerText = `${out_PHB_1.toFixed(2)}`;
+      document.getElementById("Debit_Extract").innerText = `${out_PHB_2.toFixed(2)}`;
 
       document.getElementById("outputE1").innerText  = `${Ecoul1.toFixed(2)} kg de Glycérol`;
       document.getElementById("outputE6").innerText  = `${Ecoul6.toFixed(2)} kg de PHB`;
@@ -392,6 +490,42 @@
       document.getElementById("Indice_Perfo").innerText = `Indice de performance: ${Indice_Perfo.toFixed(2)} %`;
       //document.getElementById("VPM").innerText      = `VPM = ${VPM.toFixed(2)} $`;
     }
+
+      /**
+     * Retourne une chaîne affichant le temps total de production
+     * dans l’unité la plus appropriée (heures, jours, semaines ou années).
+     *
+     * @param {number} procedureHours      Nombre d’heures dont le procédé a besoin.
+     * @param {number} heuresProdSemaine   Nombre d’heures de production disponibles par semaine.
+     * @returns {string}                   Temps formaté (ex : "3,50 jours", "1,25 semaines", "0,50 années", etc.).
+     */
+    function formatTempsProduction(procedureHours, heuresProdSemaine) {
+      // Nombre de semaines nécessaires
+      const nbSemaines = procedureHours / heuresProdSemaine;
+
+      // Si moins d’une semaine
+      if (nbSemaines < 1) {
+        // Calcul du nombre de jours (une semaine = 7 jours)
+        const nbJours = procedureHours / (heuresProdSemaine / 7);
+        // Si moins d’un jour
+        if (nbJours < 1) {
+          // On reste en heures
+          return `${procedureHours.toFixed(2)} heures`;
+        }
+        // Sinon on passe en jours
+        return `${nbJours.toFixed(2)} jours`;
+      }
+
+      // Si entre 1 et 52 semaines
+      if (nbSemaines < 52) {
+        return `${nbSemaines.toFixed(2)} semaines`;
+      }
+
+      // Au-delà d’un an (52 semaines)
+      const nbAnnees = nbSemaines / 52;
+      return `${nbAnnees.toFixed(2)} années`;
+    }
+
   </script>
 </body>
 </html>
