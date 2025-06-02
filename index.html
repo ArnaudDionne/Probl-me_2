@@ -14,45 +14,61 @@
   <!-- Onglets -->
   <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="phb-tab" data-bs-toggle="tab" data-bs-target="#phb" type="button" role="tab">Simulateur PHB</button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="autre-tab" data-bs-toggle="tab" data-bs-target="#autre" type="button" role="tab">Schéma Procédé</button>
+      <button class="nav-link active" id="autre-tab" data-bs-toggle="tab" data-bs-target="#autre" type="button" role="tab">Schéma Procédé</button>
     </li>
   </ul>
 
   <div class="tab-content mt-3">
     <!-- Onglet 1 : Simulateur PHB -->
-    <div class="tab-pane fade show active" id="phb" role="tabpanel">
-      <div class="card p-4 shadow-sm">
-        <h4>Procédé de production de PHB</h4>
-        <div class="mb-3">
-          <label class="form-label">Quantité/Années (kg/année)</label>
-          <input type="number" class="form-control" id="nbAnnees" value="200000">
+
+
+    <!-- Onglet 2 : Schema -->
+    <div class="tab-pane fade show active" id="autre" role="tabpanel">
+      <div class="position-relative w-100" style="max-width: 1800px;">
+        <img src="Procede.png" class="img-fluid w-100" alt="Schéma procédé">
+
+        <!-- Output near E6 -->
+        <div id="outputE6"
+            class="position-absolute bg-white border p-1 rounded"
+            style="top: 18%; left: 91%; font-size: 0.8rem; min-width: 100px;">
+          Résultat: -
         </div>
-        <div class="mb-3">
-          <label class="form-label">Nombre d'heures (h)</label>
-          <input type="number" class="form-control" id="nbHeures" value="2000">
+
+        <div id="outputE13"
+            class="position-absolute bg-white border p-1 rounded"
+            style="top: 93%; left: 2%; font-size: 0.8rem; min-width: 100px;">
+          Résultat: -
         </div>
-        <div class="mb-3">
-          <label class="form-label">Durée du projet (n)</label>
-          <input type="number" class="form-control" id="dureeProjet" value="10">
+
+      <div id="VPM"
+            class="position-absolute bg-white border p-1 rounded"
+            style="top: 93%; left: 85%; font-size: 0.8rem; min-width: 100px;">
+          Résultat: -
         </div>
-        <div class="mb-3">
-          <label class="form-label">i (%)</label>
-          <input type="number" class="form-control" id="i" value="5" step="0.1">
+      </div>
+
+            <!-- Inputs en dessous de l'image -->
+      <div class="row text-center mt-3 px-2">
+        <div class="col-md-3">
+          <label for="inputDebit" class="form-label">Qt de PHB (kg/An)</label>
+          <input type="number" id="nbAnnees" class="form-control" oninput="calcul()" placeholder="ex: 200000" value="200000">
         </div>
-        <img src="Fermentation_Stage.png" class="img-fluid" alt="Chemical Diagram">
-        <button class="btn btn-primary mt-2" onclick="calcul()">Calcul</button>
-        <h4 class="mt-3" id="result"></h4>
+        <div class="col-md-3">
+          <label for="inputConcentration" class="form-label">Nombre d'heures (h)</label>
+          <input type="number" id="nbHeures" class="form-control" oninput="calcul()" placeholder="ex: 2000" value="2000">
+        </div>
+        <div class="col-md-3">
+          <label for="inputTemp" class="form-label">Durée du projet (An)</label>
+          <input type="number" id="dureeProjet" class="form-control" oninput="calcul()" placeholder="ex: 10" value="10">
+        </div>
+        <div class="col-md-3">
+          <label for="inputPression" class="form-label">i (%)</label>
+          <input type="number" id="i" class="form-control" oninput="calcul()" placeholder="ex: 5" value="5">
+        </div>
       </div>
     </div>
 
-    <!-- Onglet 2 : À compléter -->
-    <div class="tab-pane fade" id="autre" role="tabpanel">
-      <div class="card p-4 shadow-sm">
-      
-        <img src="Procede.png" class="img-fluid" alt="Chemical Diagram">
+
       </div>
     </div>
   </div>
@@ -182,13 +198,14 @@
 
         const VPM = -(-(C_total * i) / (1 - Math.pow((1 + i), -dureeProjet)));
 
-        console.log("FeedOutput_E13 =", FeedOutput_E13);
-        console.log("Ecoulement_6 =", Ecoulement_6);
+        Ecoul13_heure = nbAnnees/nbHeures; // kg/h
+        Ecoul6_heure = (5.5/100)*Ecoul13_heure; // kg/h
+        
 
-        document.getElementById('result').innerHTML =
-        `FeedOutput_E13 = ${FeedOutput_E13.toFixed(5)} kg/s<br>
-        Écoulement 6 = ${Ecoulement_6.toFixed(5)} kg/s<br>
-        <strong>VPM = ${VPM.toFixed(2)} $</strong>`;
+        document.getElementById("outputE6").innerText = `PHB: ${Ecoul6_heure.toFixed(2)} kg/h`;
+        document.getElementById("outputE13").innerText = `PHB: ${Ecoul13_heure.toFixed(2)} kg/h`;
+        document.getElementById("VPM").innerText = `VPM = ${VPM.toFixed(2)} $`;
+
     }
 </script>
   
