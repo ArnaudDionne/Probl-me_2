@@ -11,7 +11,6 @@
       padding: 0;
       height: 100%;
       overflow: hidden;
-      
     }
     /* Common styles for all three panels */
     #landing, #mainContent, #settingsContent {
@@ -57,9 +56,8 @@
       color: #0d6efd;
       cursor: pointer;
     }
-    #backButton:focus {
-      outline: none;
-    }
+    #backButton:focus { outline: none; }
+
     /* Style for settings button on main */
     #settingsButton {
       position: absolute;
@@ -72,9 +70,8 @@
       color: #0d6efd;
       cursor: pointer;
     }
-    #settingsButton:focus {
-      outline: none;
-    }
+    #settingsButton:focus { outline: none; }
+
     /* Style for back arrow on settings */
     #settingsBackButton {
       position: absolute;
@@ -87,9 +84,8 @@
       color: #0d6efd;
       cursor: pointer;
     }
-    #settingsBackButton:focus {
-      outline: none;
-    }
+    #settingsBackButton:focus { outline: none; }
+
     /* Style for error text */
     #error {
       color: #dc3545;
@@ -101,38 +97,43 @@
   </style>
 </head>
 <body>
-<!-- Landing Page -->
-<div id="landing">
-  
-  <div style="width: 90%; max-width: 800px; text-align: center;">
-    <!-- Move the title out of the white box -->
-    <h1 class="mb-4">Pour notre ami, typiquement entrepreneur</h1>
+  <!-- Landing Page -->
+  <div id="landing">
+    <div style="width: 90%; max-width: 800px; text-align: center;">
+      <h1 class="mb-4">Pour notre ami, typiquement entrepreneur</h1>
+      <div class="landing-box p-4 bg-white rounded shadow-sm">
+        <div class="mb-3">
+          <label for="qt_PHB" class="form-label">Quantité de PHB Désiré :</label>
+          <!-- Champ Quantité de PHB -->
+          <input
+            type="text"
+            id="qt_PHB"
+            class="form-control"
+            placeholder="Ex : 1000 (kg)"
+            value="1000"
+            oninput="
+              // Remettre le slider à 100 (centre) à chaque modification de qt_PHB
+              document.getElementById('sliderAdjust13').value = 100;
+              // Relancer calcul() en précisant que c'est la quantité qui a changé
+              calcul('quantite');
+            "
+          />
 
-    <!-- This is the white box containing only the label/input/button -->
-    <div class="landing-box p-4 bg-white rounded shadow-sm">
-      <div class="mb-3">
-        <label for="qt_PHB" class="form-label">Quantité de PHB Désiré :</label>
-        <input type="text" id="qt_PHB" class="form-control" placeholder="Ex : 1000 (kg)" value="1000">
-        <!-- Error message -->
-        <label id="error" class="form-label"></label>
+          <label id="error" class="form-label"></label>
+        </div>
+        <button id="goButton" class="btn btn-primary w-100">Go</button>
       </div>
-      <button id="goButton" class="btn btn-primary w-100">Go</button>
     </div>
   </div>
-</div>
-
 
   <!-- Main Content (initially off-screen) -->
   <div id="mainContent">
-    <!-- Back Arrow (top-left) -->
     <button id="backButton">←</button>
-    <!-- Settings Button (top-right) -->
     <button id="settingsButton">⚙️</button>
 
     <div class="container mt-5">
       <!-- Onglets -->
       <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <!-- Tab 1: Bilan Procédé -->
         <li class="nav-item" role="presentation">
           <button
             class="nav-link active"
@@ -146,8 +147,6 @@
             Bilan Procédé
           </button>
         </li>
-
-        <!-- Tab 2: Bilan Économique -->
         <li class="nav-item" role="presentation">
           <button
             class="nav-link"
@@ -164,9 +163,9 @@
       </ul>
 
       <div class="tab-content mt-3" id="myTabContent">
-        <!-- ============================
-             Tab Pane 1: Bilan Procédé
-             ============================ -->
+        <!-- ============================ -->
+        <!-- Tab Pane 1: Bilan Procédé -->
+        <!-- ============================ -->
         <div
           class="tab-pane fade show active"
           id="procede"
@@ -177,36 +176,53 @@
           <div class="position-relative w-100" style="max-width: 1800px;">
             <img src="Procede.png" class="img-fluid w-100" alt="Schéma procédé">
 
+            <!-- Output 1 -->
             <div
               id="outputE1"
               class="position-absolute bg-white border p-1 rounded"
               style="top: 35%; left: 1%; font-size: 0.8rem; min-width: 100px;"
-            >
-              Résultat: -
-            </div>
+            >Résultat: -</div>
+
+            <!-- Output 6 -->
             <div
               id="outputE6"
               class="position-absolute bg-white border p-1 rounded"
-              style="top: 35%; left: 41%; font-size: 0.8rem; min-width: 100px;"
-            >
-              Résultat: -
-            </div>
+              style="top: 35%; left: 44%; font-size: 0.8rem; min-width: 100px;"
+            >Résultat: -</div>
+
+            <!-- Output 13 -->
             <div
               id="outputE13"
               class="position-absolute bg-white border p-1 rounded"
               style="top: 35%; right: 7%; font-size: 0.8rem; min-width: 100px;"
-            >
-              Résultat: -
-            </div>
+            >Résultat: -</div>
+
+            <!-- Slider over outputE13 to adjust Ecoul13 by ±100% -->
+            <input
+              id="sliderAdjust13"
+              type="range"
+              min="0"
+              max="200"
+              value="100"
+              class="form-range position-absolute"
+              style="
+                top: 28%;            /* légèrement au‐dessus */
+                right: 7.5%;
+                width: 100px;        /* même largeur que outputE13 */
+                z-index: 5;          /* au-dessus de la boîte outputE13 */
+              "
+              oninput="calcul('slider')"
+            />
+
+            <!-- Indice de performance -->
             <div
               id="Indice_Perfo"
               class="position-absolute bg-white border p-1 rounded"
               style="top: 80%; left: 65%; font-size: 0.8rem; min-width: 100px;"
-            >
-              Résultat: -
-            </div>
+            >Résultat: -</div>
           </div>
 
+          <!-- Résultats en tableau -->
           <div class="table-responsive mt-3">
             <table class="table table-bordered">
               <thead>
@@ -235,25 +251,18 @@
                 </tr>
                 <tr>
                   <th class="text-center align-middle">Taux Conversion (%)</th>
-                  <td id="Conv_Ferm" colspan="2" class="text-center align-middle">
-                    Conv_Ferm
-                  </td>
-                  <td id="Conv_Extract" colspan="2" class="text-center align-middle">
-                    Conv_Extract
-                  </td>
+                  <td id="Conv_Ferm" colspan="2" class="text-center align-middle">Conv_Ferm</td>
+                  <td id="Conv_Extract" colspan="2" class="text-center align-middle">Conv_Extract</td>
                 </tr>
                 <tr>
                   <th class="text-center align-middle">Débit massique (kg/h)</th>
-                  <td id="Debit_Ferm" colspan="2" class="text-center align-middle">
-                    Debit_Ferm
-                  </td>
-                  <td id="Debit_Extract" colspan="2" class="text-center align-middle">
-                    Debit_Extract
-                  </td>
+                  <td id="Debit_Ferm" colspan="2" class="text-center align-middle">Debit_Ferm</td>
+                  <td id="Debit_Extract" colspan="2" class="text-center align-middle">Debit_Extract</td>
                 </tr>
               </tbody>
             </table>
           </div>
+
           <!-- Ligne séparée pour le Temps Procédé -->
           <div class="table-responsive mt-3">
             <table class="table table-bordered w-100">
@@ -263,23 +272,17 @@
                   <th class="text-center align-middle">Temps d'opération</th>
                 </tr>
                 <tr>
-                  <td id="Temps_Process" class="text-center align-middle">
-                    <!-- Valeur en heures/jours/semaines/années -->
-                    Temps_Process
-                  </td>
-                  <td id="Temps_Annee" class="text-center align-middle">
-                    <!-- Autre valeur (ex. en jours/années, etc.) -->
-                    Temps_Annee
-                  </td>
+                  <td id="Temps_Process" class="text-center align-middle">Temps_Process</td>
+                  <td id="Temps_Annee" class="text-center align-middle">Temps_Annee</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
 
-        <!-- ============================
-             Tab Pane 2: Bilan Économique
-             ============================ -->
+        <!-- ============================ -->
+        <!-- Tab Pane 2: Bilan Économique -->
+        <!-- ============================ -->
         <div
           class="tab-pane fade"
           id="economique"
@@ -288,87 +291,125 @@
         >
           <h3>Bilan Économique</h3>
           <p>Contenu du bilan économique ici...</p>
-          <!-- Placeholder for future content -->
         </div>
       </div>
     </div>
   </div>
+
   <!-- Settings Content (initially off-screen below) -->
   <div id="settingsContent">
-    <!-- Back Arrow (top-left) -->
     <button id="settingsBackButton">←</button>
-
     <div class="container mt-5">
       <h2 class="mb-4">Paramètres</h2>
-
-      <!-- Formulaire horizontal : labels à gauche, champs à droite -->
       <form>
-        <!-- Paramètre Intérêts -->
         <div class="row mb-3 align-items-center">
           <label for="setting_interet" class="col-sm-3 col-form-label">Intérêts :</label>
           <div class="col-sm-4">
-            <input type="text" id="setting_interet" class="form-control" placeholder="0.10" value="0.10">
+            <input
+              type="text"
+              id="setting_interet"
+              class="form-control"
+              placeholder="0.10"
+              value="0.10"
+              oninput="calcul()"
+            >
           </div>
         </div>
-
-        <!-- Paramètre Inflation -->
         <div class="row mb-3 align-items-center">
           <label for="setting_inflation" class="col-sm-3 col-form-label">Inflation :</label>
           <div class="col-sm-4">
-            <input type="text" id="setting_inflation" class="form-control" placeholder="0.0231" value="0.0231">
+            <input
+              type="text"
+              id="setting_inflation"
+              class="form-control"
+              placeholder="0.0231"
+              value="0.0231"
+              oninput="calcul()"
+            >
           </div>
         </div>
-
-        <!-- Paramètre Années amortissement -->
         <div class="row mb-3 align-items-center">
           <label for="setting_amort" class="col-sm-3 col-form-label">Années d'amortissement :</label>
           <div class="col-sm-4">
-            <input type="text" id="setting_amort" class="form-control" placeholder="15" value="15">
+            <input
+              type="text"
+              id="setting_amort"
+              class="form-control"
+              placeholder="15"
+              value="15"
+              oninput="calcul()"
+            >
           </div>
         </div>
-
-        <!-- Paramètre Années emprunt -->
         <div class="row mb-3 align-items-center">
           <label for="setting_emprunt" class="col-sm-3 col-form-label">Années d'emprunt :</label>
           <div class="col-sm-4">
-            <input type="text" id="setting_emprunt" class="form-control" placeholder="15" value="15">
+            <input
+              type="text"
+              id="setting_emprunt"
+              class="form-control"
+              placeholder="15"
+              value="15"
+              oninput="calcul()"
+            >
           </div>
         </div>
-
-        <!-- Paramètre Prix vente PHB-->
         <div class="row mb-3 align-items-center">
           <label for="setting_prix_PHB" class="col-sm-3 col-form-label">Prix de vente PHB ($/kg) :</label>
           <div class="col-sm-4">
-            <input type="text" id="setting_prix_PHB" class="form-control" placeholder="4.72" value="4.72">
+            <input
+              type="text"
+              id="setting_prix_PHB"
+              class="form-control"
+              placeholder="4.72"
+              value="4.72"
+              oninput="calcul()"
+            >
           </div>
         </div>
-
-        <!-- Paramètre Année Actuelle-->
         <div class="row mb-3 align-items-center">
           <label for="setting_annee" class="col-sm-3 col-form-label">Année actuelle :</label>
           <div class="col-sm-4">
-            <input type="text" id="setting_annee" class="form-control" placeholder="2025" value="2025">
+            <input
+              type="text"
+              id="setting_annee"
+              class="form-control"
+              placeholder="2025"
+              value="2025"
+              oninput="calcul()"
+            >
           </div>
         </div>
-
-        <!-- Paramètre Taux Change -->
         <div class="row mb-3 align-items-center">
           <label for="setting_taux_change" class="col-sm-3 col-form-label">Taux de change USD to CAD :</label>
           <div class="col-sm-4">
-            <input type="text" id="setting_taux_change" class="form-control" placeholder="1.38" value="1.38">
+            <input
+              type="text"
+              id="setting_taux_change"
+              class="form-control"
+              placeholder="1.38"
+              value="1.38"
+              oninput="calcul()"
+            >
           </div>
         </div>
-
-        <!-- Paramètre Heures prod/semaines -->
         <div class="row mb-3 align-items-center">
           <label for="setting_h_prod" class="col-sm-3 col-form-label">Heures de production par semaine :</label>
           <div class="col-sm-4">
-            <input type="text" id="setting_h_prod" class="form-control" placeholder="40" value="40">
+            <input
+              type="text"
+              id="setting_h_prod"
+              class="form-control"
+              placeholder="40"
+              value="40"
+              oninput="calcul()"
+            >
           </div>
         </div>
       </form>
     </div>
   </div>
+
 
   <!-- Slide Animation & Validation Script -->
   <script>
@@ -382,11 +423,9 @@
     const errorLabel      = document.getElementById('error');
     const qtInput         = document.getElementById('qt_PHB');
 
-    // Affiche un message d'erreur sous le champ
     function showError(msg) {
       errorLabel.innerText = msg;
     }
-    // Efface le message d'erreur
     function clearError() {
       errorLabel.innerText = '';
     }
@@ -397,8 +436,7 @@
       if (isNaN(quantite_PHB) || quantite_PHB <= 0) {
         showError("Mettre un nombre valide!");
         return;
-      }
-      else if ( quantite_PHB >= 9999999) {
+      } else if (quantite_PHB >= 9999999) {
         showError("On se calme");
         return;
       }
@@ -438,96 +476,101 @@
   </script>
 
   <script>
-    const out_PHB_2 = 25.6; // kg/h
-    const out_PHB_1 = 49.12; // kg/h
+    const out_PHB_2 = 25.6;   // base PHB-out (kg/h)
+    const out_PHB_1 = 49.12;  // base PHB-out secondaire (kg/h)
     const in_Glycerol = 1000; // kg/h
-    const out_Glycerol = 0; // kg/h
-    const PHB_Ferm_in = 0; // kg/h
-    const conver_ferm = 100
-    function calcul() {
+    const out_Glycerol = 0;   // kg/h
+    const PHB_Ferm_in = 0;    // kg/h
+    const conver_ferm = 100;  // %
 
+    /**
+    * @param {'quantite'|'slider'} source
+    */
+    function calcul(source) {
+      // 1) Lecture des entrées quel que soit l'appel
+      const quantite_PHB   = parseFloat(document.getElementById('qt_PHB').value);
+      const sliderVal13    = parseFloat(document.getElementById('sliderAdjust13').value);
+      const adjust13Factor = sliderVal13 / 100; // 0.00 → 2.00
 
-      const quantite_PHB = parseFloat(document.getElementById('qt_PHB').value);
+      // 2) Vérification de la quantité PHB
+      if (isNaN(quantite_PHB) || quantite_PHB <= 0) {
+        document.getElementById('error').innerText = "Mettre un nombre valide !";
+        return;
+      }
+      document.getElementById('error').innerText = "";
+
+      // 3) Calcul de Ecoul13 de base (avant ajustement)
+      const baseOutPHB2    = out_PHB_2; // 25.6 (défini en haut du script)
+      const temps_base     = quantite_PHB / baseOutPHB2;      // temps (h) si on produit quantite_PHB
+      const Ecoul13_base   = baseOutPHB2 * temps_base;        // PHB total produit sans ajustement
+      const Ecoul13        = Ecoul13_base * adjust13Factor;   // PHB total produit ajusté
       
-      const temps_requis = quantite_PHB / out_PHB_2; // heures
-
-
-      const i = parseFloat(document.getElementById('setting_interet').value) || 0.1;
-      const inflation = parseFloat(document.getElementById('setting_inflation').value) || 0.0231;
-      const annee_amort = parseFloat(document.getElementById('setting_amort').value) || 15;
-      const annee_emprunt = parseFloat(document.getElementById('setting_emprunt').value) || 15;
-      const prix_PHB = parseFloat(document.getElementById('setting_prix_PHB').value) || 4.72; //$/kg
-      const annee_actuelle = parseFloat(document.getElementById('setting_annee').value) || 2025;
-      const taux_change = parseFloat(document.getElementById('setting_taux_change').value) || 1.38; // USD to CAD
-      const heures_prod = parseFloat(document.getElementById('setting_h_prod').value) || 40; // heures par semaine
-
-
-      //const VPM = - ( - (C_total * i) / (1 - Math.pow((1 + i), -dureeProjet)) );
-
-      const Ecoul1 = in_Glycerol * temps_requis 
-      const Ecoul6 = out_PHB_1 * temps_requis;
-      const Ecoul13 = out_PHB_2 * temps_requis;
-      const Indice_Perfo = (1-((Ecoul6 - Ecoul13) / Ecoul6))*100;
-      const Temps_Annee = formatTempsProduction(temps_requis, heures_prod);
-
-      // Affichage tableau procédé
-      document.getElementById("Gly_Ferm_in").innerText = Ecoul1.toFixed(2);
-      document.getElementById("Gly_Ferm_out").innerText = out_Glycerol.toFixed(2);
-      document.getElementById("Gly_Ext_in").innerText = out_Glycerol.toFixed(2);
-      document.getElementById("Gly_Ext_out").innerText = out_Glycerol.toFixed(2);
-      document.getElementById("PHB_Ferm_in").innerText = PHB_Ferm_in.toFixed(2);   
-      document.getElementById("PHB_Ferm_out").innerText = Ecoul6.toFixed(2);
-      document.getElementById("PHB_Ext_in").innerText = Ecoul6.toFixed(2);
-      document.getElementById("PHB_Ext_out").innerText = Ecoul13.toFixed(2);
-      document.getElementById("Conv_Ferm").innerText = conver_ferm.toFixed(2);
-      document.getElementById("Conv_Extract").innerText = Indice_Perfo.toFixed(2);
-      document.getElementById("Temps_Process").innerText = `${temps_requis.toFixed(2)} heures`;
-      document.getElementById("Temps_Annee").innerText = `${Temps_Annee}`;
-      document.getElementById("Debit_Ferm").innerText = `${out_PHB_1.toFixed(2)}`;
-      document.getElementById("Debit_Extract").innerText = `${out_PHB_2.toFixed(2)}`;
-
-      document.getElementById("outputE1").innerText  = `${Ecoul1.toFixed(2)} kg de Glycérol`;
-      document.getElementById("outputE6").innerText  = `${Ecoul6.toFixed(2)} kg de PHB`;
-      document.getElementById("outputE13").innerText = `${Ecoul13.toFixed(2)} kg de PHB`;
-      document.getElementById("Indice_Perfo").innerText = `Indice de performance: ${Indice_Perfo.toFixed(2)} %`;
-      //document.getElementById("VPM").innerText      = `VPM = ${VPM.toFixed(2)} $`;
-    }
-
-      /**
-     * Retourne une chaîne affichant le temps total de production
-     * dans l’unité la plus appropriée (heures, jours, semaines ou années).
-     *
-     * @param {number} procedureHours      Nombre d’heures dont le procédé a besoin.
-     * @param {number} heuresProdSemaine   Nombre d’heures de production disponibles par semaine.
-     * @returns {string}                   Temps formaté (ex : "3,50 jours", "1,25 semaines", "0,50 années", etc.).
-     */
-    function formatTempsProduction(procedureHours, heuresProdSemaine) {
-      // Nombre de semaines nécessaires
-      const nbSemaines = procedureHours / heuresProdSemaine;
-
-      // Si moins d’une semaine
-      if (nbSemaines < 1) {
-        // Calcul du nombre de jours (une semaine = 7 jours)
-        const nbJours = procedureHours / (heuresProdSemaine / 7);
-        // Si moins d’un jour
-        if (nbJours < 1) {
-          // On reste en heures
-          return `${procedureHours.toFixed(2)} heures`;
-        }
-        // Sinon on passe en jours
-        return `${nbJours.toFixed(2)} jours`;
+      let temps_requis;
+      if (source === 'slider') {
+        // Si le slider a bougé, on recalcule le temps nécessaire pour atteindre Ecoul13 AU DÉBIT fixe out_PHB_2
+        temps_requis = Ecoul13 / baseOutPHB2;
+      } else {
+        // Si c'est la quantité qui a changé, on recalcule temps par rapport à cette quantite_PHB
+        temps_requis = quantite_PHB / baseOutPHB2;
       }
 
-      // Si entre 1 et 52 semaines
+      // 4) Le reste des calculs reste inchangé
+      const in_Glycerol   = 1000;   // kg/h
+      const out_PHB_1     = 49.12;  // kg/h
+      const Ecoul1        = in_Glycerol * temps_requis;
+      const Ecoul6        = out_PHB_1 * temps_requis;
+      // Ecoul13 a déjà été calculé selon adjust13Factor
+
+      const Indice_Perfo  = (1 - ((Ecoul6 - Ecoul13) / Ecoul6)) * 100;
+
+      const heures_prod   = parseFloat(document.getElementById('setting_h_prod').value) || 40;
+      const Temps_Annee   = formatTempsProduction(temps_requis, heures_prod);
+
+      // 5) Injection des résultats dans le DOM
+      document.getElementById("Gly_Ferm_in").innerText   = Ecoul1.toFixed(2);
+      document.getElementById("Gly_Ferm_out").innerText  = (0).toFixed(2);
+      document.getElementById("Gly_Ext_in").innerText    = (0).toFixed(2);
+      document.getElementById("Gly_Ext_out").innerText   = (0).toFixed(2);
+
+      document.getElementById("PHB_Ferm_in").innerText   = (0).toFixed(2);
+      document.getElementById("PHB_Ferm_out").innerText  = Ecoul6.toFixed(2);
+      document.getElementById("PHB_Ext_in").innerText    = Ecoul6.toFixed(2);
+      document.getElementById("PHB_Ext_out").innerText   = Ecoul13.toFixed(2);
+
+      document.getElementById("Conv_Ferm").innerText     = conver_ferm.toFixed(2);
+      document.getElementById("Conv_Extract").innerText  = Indice_Perfo.toFixed(2);
+
+      document.getElementById("Temps_Process").innerText = `${temps_requis.toFixed(2)} heures`;
+      document.getElementById("Temps_Annee").innerText   = Temps_Annee;
+
+      document.getElementById("Debit_Ferm").innerText    = out_PHB_1.toFixed(2);
+      document.getElementById("Debit_Extract").innerText = baseOutPHB2.toFixed(2);
+
+      document.getElementById("outputE1").innerText      = `${Ecoul1.toFixed(2)} kg de Glycérol`;
+      document.getElementById("outputE6").innerText      = `${Ecoul6.toFixed(2)} kg de PHB`;
+      document.getElementById("outputE13").innerText     = `${Ecoul13.toFixed(2)} kg de PHB`;
+      document.getElementById("Indice_Perfo").innerText  = `Indice de performance: ${Indice_Perfo.toFixed(2)} %`;
+    }
+
+    /**
+     * Retourne une chaîne affichant le temps total de production
+     * dans l’unité la plus appropriée (heures, jours, semaines ou années).
+     */
+    function formatTempsProduction(procedureHours, heuresProdSemaine) {
+      const nbSemaines = procedureHours / heuresProdSemaine;
+      if (nbSemaines < 1) {
+        const nbJours = procedureHours / (heuresProdSemaine / 7);
+        if (nbJours < 1) {
+          return `${procedureHours.toFixed(2)} heures`;
+        }
+        return `${nbJours.toFixed(2)} jours`;
+      }
       if (nbSemaines < 52) {
         return `${nbSemaines.toFixed(2)} semaines`;
       }
-
-      // Au-delà d’un an (52 semaines)
       const nbAnnees = nbSemaines / 52;
       return `${nbAnnees.toFixed(2)} années`;
     }
-
   </script>
 </body>
 </html>
