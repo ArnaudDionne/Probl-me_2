@@ -143,7 +143,7 @@
 
         const C_total = C_pompe + C_Sterilisateur + C_Echangeur_1 + C_fermenteur_1 + C_fermenteur_2 + C_Heater + C_Digesteur + C_centrifuge + C_Cuve_Lavage + C_Echangeur_2 + C_Evaporateur + C_Spray_Dryer;
 
-        const VPM = -(C_total * i) / (1 - Math.pow(1 + i, -n));
+        const VPM = -(C_total * i) / (1 - Math.pow(1 + i, -dureeProjet));
 
 
         document.getElementById('result').innerText = `VPM Test = ${VPM.toFixed(2)} $`;
