@@ -289,9 +289,56 @@
           role="tabpanel"
           aria-labelledby="economique-tab"
         >
-          <h3>Bilan Économique</h3>
-          <p>Contenu du bilan économique ici...</p>
+         
+          <div class="row">
+            <!-- Colonne de gauche : tableau 2×8 -->
+            <div class="col-md-5">
+              <table class="table table-bordered">
+                <thead class="table-light">
+                  <tr>
+                    <th class="text-center align-middle">Catégorie</th>
+                    <th class="text-center align-middle">Montant ($)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="align-middle">Coût de production</td>
+                    <td id="Tab_Opex" class="text-center align-middle">Tab_Opex</td>
+                  </tr>
+                  <tr>
+                    <td class="align-middle">Prix de vente du PHB</td>
+                    <td id="Tab_PHB" class="text-center align-middle">Tab_PHB</td>
+                  </tr>
+                  <tr>
+                    <td class="align-middle">Coût d'équipement (annuité)</td>
+                    <td id="Tab_Equip" class="text-center align-middle">Tab_Equip</td>
+                  </tr>
+                  <tr>
+                    <td class="align-middle">Profit Net Annuel ($)</td>
+                    <td id="Tab_Profit" class="text-center align-middle">Tab_Profit</td>
+                  </tr>
+                  <tr>
+                    <td class="align-middle">Marge Bénéficiaire ($/kg)</td>
+                    <td id="Tab_Marge" class="text-center align-middle">Tab_Marge</td>
+                  </tr>
+                  <tr>
+                    <td class="align-middle">Retour sur Investissement (%)</td>
+                    <td id="Tab_ROI" class="text-center align-middle">Tab_ROI</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Colonne de droite (décalée d'une colonne) : pie chart -->
+            <div class="col-md-5 offset-md-1">
+              <div style="max-width: 600px; max-height: 600px; margin: 0 auto;">
+                <canvas id="pieChartEconomique"></canvas>
+              </div>
+            </div>
+          </div>
         </div>
+
+
       </div>
     </div>
   </div>
@@ -348,8 +395,8 @@
               type="text"
               id="setting_emprunt"
               class="form-control"
-              placeholder="15"
-              value="15"
+              placeholder="10"
+              value="10"
               oninput="calcul()"
             >
           </div>
@@ -361,8 +408,8 @@
               type="text"
               id="setting_prix_PHB"
               class="form-control"
-              placeholder="4.72"
-              value="4.72"
+              placeholder="3.75" 
+              value="3.75"
               oninput="calcul()"
             >
           </div>
@@ -422,6 +469,13 @@
     const settingsBackBtn = document.getElementById('settingsBackButton');
     const errorLabel      = document.getElementById('error');
     const qtInput         = document.getElementById('qt_PHB');
+
+    const C0_MP       = 0.159;  // Matière première
+    const C0_UTILITES = 0.658;  // Coûts utilités
+    const C0_MOD      = 0.066;  // Coûts MOD
+    const C0_INDIRECT = 0.210;  // Coûts indirects d'exploitation
+    const C0_ADMIN    = 0.186;  // Coût administratifs
+    const C0_DEPR_CAP = 0.668;  // Coût de dépréciation du capital
 
     function showError(msg) {
       errorLabel.innerText = msg;
@@ -526,7 +580,94 @@
       const heures_prod   = parseFloat(document.getElementById('setting_h_prod').value) || 40;
       const Temps_Annee   = formatTempsProduction(temps_requis, heures_prod);
 
-      // 5) Injection des résultats dans le DOM
+      // 5) Calculs Economiques
+      const tauxInteret       = parseFloat(document.getElementById('setting_interet').value)       || 0.10;
+      const tauxInflation     = parseFloat(document.getElementById('setting_inflation').value)     || 0.0231;
+      const anneesAmort       = parseInt  (document.getElementById('setting_amort').value)         || 15;
+      const anneesEmprunt     = parseInt  (document.getElementById('setting_emprunt').value)       || 10;
+      const prixVentePHB      = parseFloat(document.getElementById('setting_prix_PHB').value)      || -2.6;
+      const anneeActuelle     = parseInt  (document.getElementById('setting_annee').value)         || new Date().getFullYear();
+      const tauxChangeUSDtoCAD= parseFloat(document.getElementById('setting_taux_change').value)   || 1.38;
+      const heuresProdSemaine = parseFloat(document.getElementById('setting_h_prod').value)        || 40;
+      
+      //OPEX
+
+
+      const f_matiere_premiere = C0_MP*Math.pow(1 + tauxInflation, anneesAmort);
+      const matiere_premiere_cad = f_matiere_premiere * tauxChangeUSDtoCAD;
+
+      const f_utilites = C0_UTILITES*Math.pow(1 + tauxInflation, anneesAmort);
+      const utilites_cad = f_utilites * tauxChangeUSDtoCAD;
+
+      const f_mod = C0_MOD*Math.pow(1 + tauxInflation, anneesAmort);
+      const mod_cad = f_mod * tauxChangeUSDtoCAD;
+
+      const f_indirects = C0_INDIRECT*Math.pow(1 + tauxInflation, anneesAmort);
+      const indirects_cad = f_indirects * tauxChangeUSDtoCAD;
+
+      const f_admin = C0_ADMIN*Math.pow(1 + tauxInflation, anneesAmort);
+      const admin_cad = f_admin * tauxChangeUSDtoCAD;
+
+      const f_depr_cap = C0_DEPR_CAP*Math.pow(1 + tauxInflation, anneesAmort);
+      const depr_cap_cad = f_depr_cap * tauxChangeUSDtoCAD;
+
+
+      const val_depr_cap = depr_cap_cad * (temps_requis * baseOutPHB2); // Coût de dépréciation du capital en CAD
+      const val_admin = admin_cad * (temps_requis * baseOutPHB2); // Coût administratifs en CAD
+      const val_indirects = indirects_cad * (temps_requis * baseOutPHB2); // Coûts indirects d'exploitation en CAD
+      const val_mod = mod_cad * (temps_requis * baseOutPHB2); // Coûts MOD en CAD
+      const val_utilites = utilites_cad * (temps_requis * baseOutPHB2); // Coûts utilités en CAD
+      const val_matiere_premiere = matiere_premiere_cad * (temps_requis * baseOutPHB2); // Coût de la matière première en CAD
+
+      const OPEX = val_depr_cap + val_admin + val_indirects + val_mod + val_utilites + val_matiere_premiere; // Coût de production total en CAD
+      const somme_opex = matiere_premiere_cad + utilites_cad + mod_cad + indirects_cad + admin_cad + depr_cap_cad; // Somme des coûts en CAD
+
+      document.getElementById("Tab_Opex").innerText = `${OPEX.toFixed(2)}`;
+
+      // Prix de vente du PHB
+
+      const f_prix_vente_PHB = prixVentePHB * Math.pow(1 + tauxInflation, (anneeActuelle-2010));
+      const prix_vente_PHB_cad = f_prix_vente_PHB * tauxChangeUSDtoCAD; // $/kg PHB
+
+      const prix_vente_PHB = prix_vente_PHB_cad * (temps_requis*baseOutPHB2); // Prix de vente PBH total en CAD 
+
+      document.getElementById("Tab_PHB").innerText = `${prix_vente_PHB.toFixed(2)}`;
+
+      // Coût d'équipement (annuité)
+
+      const CAPEX = depr_cap_cad * anneesEmprunt * (temps_requis * baseOutPHB2);
+      // À placer dans calcul() une fois que vous avez récupéré dans des variables :
+      // rate   = taux périodique (par exemple 0.05 pour 5 %)
+      // n      = nombre de périodes (ex. 10)
+      // va     = valeur actuelle (par exemple C27)
+      // fv     = valeur future (généralement 0 si vous ne l’utilisez pas)
+      // type   = 0 (paiement en fin de période) ou 1 (début)
+
+      let VPM;
+      if (tauxInteret === 0) {
+        // Cas taux = 0 : paiement constant = (va + fv) / n
+        VPM = (CAPEX) / anneesEmprunt;
+      } else {
+        const numerator   = tauxInteret * (CAPEX	 * (1 + tauxInteret * 0));
+        const denominator = 1 - Math.pow(1 + tauxInteret, -anneesEmprunt);
+        VPM = numerator / denominator;
+      }
+
+      document.getElementById("Tab_Equip").innerText = `${VPM.toFixed(2)}`;
+
+      // Profit Net Annuel
+      const profit_net_annuel = prix_vente_PHB - OPEX - VPM;  // Profit net annuel en CAD
+      document.getElementById("Tab_Profit").innerText = `${profit_net_annuel.toFixed(2)}`;
+
+      // Marge Bénéficiaire
+      const marge_beneficiaire = prix_vente_PHB_cad - somme_opex; // Marge bénéficiaire en $/kg PHB
+      document.getElementById("Tab_Marge").innerText = `${marge_beneficiaire.toFixed(2)}`;
+
+      // Retour sur Investissement (ROI)
+      const ROI = (profit_net_annuel / CAPEX) * 100; // ROI en pourcentage
+      document.getElementById("Tab_ROI").innerText = `${ROI.toFixed(2)}`;
+
+      // 6) Injection des résultats dans le DOM
       document.getElementById("Gly_Ferm_in").innerText   = Ecoul1.toFixed(2);
       document.getElementById("Gly_Ferm_out").innerText  = (0).toFixed(2);
       document.getElementById("Gly_Ext_in").innerText    = (0).toFixed(2);
@@ -550,6 +691,24 @@
       document.getElementById("outputE6").innerText      = `${Ecoul6.toFixed(2)} kg de PHB`;
       document.getElementById("outputE13").innerText     = `${Ecoul13.toFixed(2)} kg de PHB`;
       document.getElementById("Indice_Perfo").innerText  = `Indice de performance: ${Indice_Perfo.toFixed(2)} %`;
+
+      // … votre code de calcul (OPEX, CAPEX, etc.) …
+
+    // on remplit le tableau « data » dans le même ordre que vos labels :
+    if (pieChart) {
+      pieChart.data.datasets[0].data = [
+        val_matiere_premiere,
+        val_utilites,
+        val_mod,
+        val_indirects,
+        val_admin,
+        val_depr_cap,
+        VPM,
+        profit_net_annuel
+      ];
+      pieChart.update();
+    }
+
     }
 
     /**
@@ -572,5 +731,64 @@
       return `${nbAnnees.toFixed(2)} années`;
     }
   </script>
+  <!-- Charger Chart.js depuis CDN -->
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // 1) On déclare pieChart dans la portée globale
+    let pieChart = null;
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const ctx = document.getElementById('pieChartEconomique').getContext('2d');
+      pieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: [
+            'Matière première (MP)',
+            'Coûts utilités',
+            'Coûts MOD',
+            'Coûts indirects',
+            'Coût admin',
+            'Coût dépréc capital',
+            'Coût équipement',
+            'Profit net annuel'
+          ],
+          datasets: [{
+            //  On met un tableau « vide » ou des zéros par défaut, on remplacera à calcul()
+            data: [0, 0, 0, 0, 0, 0, 0, 0],
+            backgroundColor: [
+              '#007bff',
+              '#28a745',
+              '#dc3545',
+              '#ffc107',
+              '#17a2b8',
+              '#6f42c1',
+              '#e83e8c',
+              '#fd7e14'
+            ]
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { boxWidth: 12, padding: 8 }
+            },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  const idx = context.dataIndex;
+                  const value = context.dataset.data[idx];
+                  return context.label + ': ' + value.toLocaleString() + ' CAD';
+                }
+              }
+            }
+          }
+        }
+      });
+    });
+  </script>
+
 </body>
 </html>
