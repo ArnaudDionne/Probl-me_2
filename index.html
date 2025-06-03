@@ -103,7 +103,7 @@
       <h1 class="mb-4">Pour notre ami, typiquement entrepreneur</h1>
       <div class="landing-box p-4 bg-white rounded shadow-sm">
         <div class="mb-3">
-          <label for="qt_PHB" class="form-label">Quantité de PHB Désiré :</label>
+          <label for="qt_PHB" class="form-label">Quantité de PHB Désiré (kg):</label>
           <!-- Champ Quantité de PHB -->
           <input
             type="text"
@@ -181,6 +181,8 @@
               id="outputE1"
               class="position-absolute bg-white border p-1 rounded"
               style="top: 35%; left: 1%; font-size: 0.8rem; width: 13%;"
+              data-bs-toggle="tooltip"
+              title="Ecoul1 = in_Glycerol × temps_requis"
             >Résultat: -</div>
 
             <!-- Output 6 -->
@@ -188,6 +190,8 @@
               id="outputE6"
               class="position-absolute bg-white border p-1 rounded"
               style="top: 35%; left: 44%; font-size: 0.8rem; width: 10%;"
+              data-bs-toggle="tooltip"
+              title="Ecoul6 = out_PHB_1 × temps_requis"
             >Résultat: -</div>
 
             <!-- Output 13 -->
@@ -195,6 +199,8 @@
               id="outputE13"
               class="position-absolute bg-white border p-1 rounded"
               style="top: 35%; right: 7%; font-size: 0.8rem; width: 10%;"
+              data-bs-toggle="tooltip"
+              title="Ecoul13 = out_PHB_2 × (quantite_PHB ÷ out_PHB_2) × (sliderAdjust13 ÷ 100)"
             >Résultat: -</div>
 
             <!-- Slider over outputE13 to adjust Ecoul13 by ±100% -->
@@ -212,6 +218,8 @@
                 z-index: 5;          /* au-dessus de la boîte outputE13 */
               "
               oninput="calcul('slider')"
+              data-bs-toggle="tooltip"
+              title="Ajuste Ecoul13 entre 0% (slider=0) et 200% (slider=200) de la valeur de base"
             />
 
             <!-- Indice de performance -->
@@ -219,6 +227,8 @@
               id="Indice_Perfo"
               class="position-absolute bg-white border p-1 rounded"
               style="top: 80%; left: 64%; font-size: 0.8rem; width: 15%;"
+              data-bs-toggle="tooltip"
+              title="Indice_Perfo = (1 – ((Ecoul6 – Ecoul13) ÷ Ecoul6)) × 100"
             >Résultat: -</div>
           </div>
 
@@ -227,7 +237,7 @@
             <table class="table table-bordered">
               <thead>
                 <tr>
-                  <th class="text-center align-middle"></th>
+                  <th class="text-center align-middle">Paramètre</th>
                   <th class="text-center align-middle">Fermenteur in</th>
                   <th class="text-center align-middle">Fermenteur out</th>
                   <th class="text-center align-middle">Extraction in</th>
@@ -237,27 +247,91 @@
               <tbody>
                 <tr>
                   <th class="text-center align-middle">Glycérol (kg)</th>
-                  <td id="Gly_Ferm_in" class="text-center align-middle">Gly_Ferm_in</td>
-                  <td id="Gly_Ferm_out" class="text-center align-middle">Gly_Ferm_out</td>
-                  <td id="Gly_Ext_in" class="text-center align-middle">Gly_Ext_in</td>
-                  <td id="Gly_Ext_out" class="text-center align-middle">Gly_Ext_out</td>
+                  <td
+                    id="Gly_Ferm_in"
+                    class="text-center align-middle"
+                    data-bs-toggle="tooltip"
+                    title="Gly_Ferm_in = in_Glycerol × temps_requis"
+                  >Gly_Ferm_in</td>
+                  <td
+                    id="Gly_Ferm_out"
+                    class="text-center align-middle"
+                    data-bs-toggle="tooltip"
+                    title="Gly_Ferm_out = 0 (pas de sortie avant extraction)"
+                  >Gly_Ferm_out</td>
+                  <td
+                    id="Gly_Ext_in"
+                    class="text-center align-middle"
+                    data-bs-toggle="tooltip"
+                    title="Gly_Ext_in = 0 (pas d’entrée dans extraction)"
+                  >Gly_Ext_in</td>
+                  <td
+                    id="Gly_Ext_out"
+                    class="text-center align-middle"
+                    data-bs-toggle="tooltip"
+                    title="Gly_Ext_out = 0 (pas de sortie après extraction)"
+                  >Gly_Ext_out</td>
                 </tr>
                 <tr>
                   <th class="text-center align-middle">PHB (kg)</th>
-                  <td id="PHB_Ferm_in" class="text-center align-middle">PHB_Ferm_in</td>
-                  <td id="PHB_Ferm_out" class="text-center align-middle">PHB_Ferm_out</td>
-                  <td id="PHB_Ext_in" class="text-center align-middle">PHB_Ext_in</td>
-                  <td id="PHB_Ext_out" class="text-center align-middle">PHB_Ext_out</td>
+                  <td
+                    id="PHB_Ferm_in"
+                    class="text-center align-middle"
+                    data-bs-toggle="tooltip"
+                    title="PHB_Ferm_in = 0 (pas d’entrée dans fermenteur)"
+                  >PHB_Ferm_in</td>
+                  <td
+                    id="PHB_Ferm_out"
+                    class="text-center align-middle"
+                    data-bs-toggle="tooltip"
+                    title="PHB_Ferm_out = out_PHB_1 × temps_requis"
+                  >PHB_Ferm_out</td>
+                  <td
+                    id="PHB_Ext_in"
+                    class="text-center align-middle"
+                    data-bs-toggle="tooltip"
+                    title="PHB_Ext_in = PHB_Ferm_out"
+                  >PHB_Ext_in</td>
+                  <td
+                    id="PHB_Ext_out"
+                    class="text-center align-middle"
+                    data-bs-toggle="tooltip"
+                    title="PHB_Ext_out = Ecoul13"
+                  >PHB_Ext_out</td>
                 </tr>
                 <tr>
                   <th class="text-center align-middle">Taux Conversion (%)</th>
-                  <td id="Conv_Ferm" colspan="2" class="text-center align-middle">Conv_Ferm</td>
-                  <td id="Conv_Extract" colspan="2" class="text-center align-middle">Conv_Extract</td>
+                  <td
+                    id="Conv_Ferm"
+                    colspan="2"
+                    class="text-center align-middle"
+                    data-bs-toggle="tooltip"
+                    title="Conv_Ferm = 100% (constante)"
+                  >Conv_Ferm</td>
+                  <td
+                    id="Conv_Extract"
+                    colspan="2"
+                    class="text-center align-middle"
+                    data-bs-toggle="tooltip"
+                    title="Conv_Extract = Indice_Perfo"
+                  >Conv_Extract</td>
                 </tr>
                 <tr>
                   <th class="text-center align-middle">Débit massique (kg/h)</th>
-                  <td id="Debit_Ferm" colspan="2" class="text-center align-middle">Debit_Ferm</td>
-                  <td id="Debit_Extract" colspan="2" class="text-center align-middle">Debit_Extract</td>
+                  <td
+                    id="Debit_Ferm"
+                    colspan="2"
+                    class="text-center align-middle"
+                    data-bs-toggle="tooltip"
+                    title="Debit_Ferm = out_PHB_1 (constante)"
+                  >Debit_Ferm</td>
+                  <td
+                    id="Debit_Extract"
+                    colspan="2"
+                    class="text-center align-middle"
+                    data-bs-toggle="tooltip"
+                    title="Debit_Extract = out_PHB_2 (constante)"
+                  >Debit_Extract</td>
                 </tr>
               </tbody>
             </table>
@@ -272,8 +346,18 @@
                   <th class="text-center align-middle">Temps d'opération</th>
                 </tr>
                 <tr>
-                  <td id="Temps_Process" class="text-center align-middle">Temps_Process</td>
-                  <td id="Temps_Annee" class="text-center align-middle">Temps_Annee</td>
+                  <td
+                    id="Temps_Process"
+                    class="text-center align-middle"
+                    data-bs-toggle="tooltip"
+                    title="Temps_Process = quantite_PHB ÷ out_PHB_2 (ou Ecoul13 ÷ out_PHB_2 si slider)"
+                  >Temps_Process</td>
+                  <td
+                    id="Temps_Annee"
+                    class="text-center align-middle"
+                    data-bs-toggle="tooltip"
+                    title="Temps_Annee = formatTempsProduction(Temps_Process, heuresProdSemaine)"
+                  >Temps_Annee</td>
                 </tr>
               </tbody>
             </table>
@@ -302,28 +386,58 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td class="align-middle">Coût de production</td>
-                    <td id="Tab_Opex" class="text-center align-middle">Tab_Opex</td>
+                    <td class="align-middle">Coût de production (OPEX)</td>
+                    <td
+                      id="Tab_Opex"
+                      class="text-center align-middle"
+                      data-bs-toggle="tooltip"
+                      title="OPEX = Σ [ (C0_i × (1 + inflation)^amort ) × tauxChange ] × (Temps_Process × out_PHB_2)"
+                    >Tab_Opex</td>
                   </tr>
                   <tr>
                     <td class="align-middle">Prix de vente du PHB</td>
-                    <td id="Tab_PHB" class="text-center align-middle">Tab_PHB</td>
+                    <td
+                      id="Tab_PHB"
+                      class="text-center align-middle"
+                      data-bs-toggle="tooltip"
+                      title="Prix_PHB = [prixVentePHB × (1 + inflation)^(anneeActuelle – 2010) × tauxChange ] × (Temps_Process × out_PHB_2)"
+                    >Tab_PHB</td>
                   </tr>
                   <tr>
                     <td class="align-middle">Coût d'équipement (annuité)</td>
-                    <td id="Tab_Equip" class="text-center align-middle">Tab_Equip</td>
+                    <td
+                      id="Tab_Equip"
+                      class="text-center align-middle"
+                      data-bs-toggle="tooltip"
+                      title="VPM = tauxInteret × CAPEX ÷ [1 – (1 + tauxInteret)^(-anneesEmprunt)], avec CAPEX = depr_cap_cad × anneesEmprunt × (Temps_Process × out_PHB_2)"
+                    >Tab_Equip</td>
                   </tr>
                   <tr>
                     <td class="align-middle">Profit Net Annuel ($)</td>
-                    <td id="Tab_Profit" class="text-center align-middle">Tab_Profit</td>
+                    <td
+                      id="Tab_Profit"
+                      class="text-center align-middle"
+                      data-bs-toggle="tooltip"
+                      title="Profit_Net = Tab_PHB – Tab_Opex – Tab_Equip"
+                    >Tab_Profit</td>
                   </tr>
                   <tr>
                     <td class="align-middle">Marge Bénéficiaire ($/kg)</td>
-                    <td id="Tab_Marge" class="text-center align-middle">Tab_Marge</td>
+                    <td
+                      id="Tab_Marge"
+                      class="text-center align-middle"
+                      data-bs-toggle="tooltip"
+                      title="Marge = prix_vente_PHB_cad – Σ [C0_i × (1 + inflation)^amort × tauxChange] (par kg)"
+                    >Tab_Marge</td>
                   </tr>
                   <tr>
                     <td class="align-middle">Retour sur Investissement (%)</td>
-                    <td id="Tab_ROI" class="text-center align-middle">Tab_ROI</td>
+                    <td
+                      id="Tab_ROI"
+                      class="text-center align-middle"
+                      data-bs-toggle="tooltip"
+                      title="ROI = (Profit_Net ÷ CAPEX) × 100"
+                    >Tab_ROI</td>
                   </tr>
                 </tbody>
               </table>
@@ -533,9 +647,6 @@
     const out_PHB_2 = 25.6;   // base PHB-out (kg/h)
     const out_PHB_1 = 49.12;  // base PHB-out secondaire (kg/h)
     const in_Glycerol = 1000; // kg/h
-    const out_Glycerol = 0;   // kg/h
-    const PHB_Ferm_in = 0;    // kg/h
-    const conver_ferm = 100;  // %
 
     /**
     * @param {'quantite'|'slider'} source
@@ -569,10 +680,8 @@
       }
 
       // 4) Le reste des calculs reste inchangé
-      const in_Glycerol   = 1000;   // kg/h
-      const out_PHB_1     = 49.12;  // kg/h
-      const Ecoul1        = in_Glycerol * temps_requis;
-      const Ecoul6        = out_PHB_1 * temps_requis;
+      const Ecoul1        = in_Glycerol * temps_requis;            // Glycérol total consommé
+      const Ecoul6        = out_PHB_1 * temps_requis;             // PHB total en sortie fermenteur
       // Ecoul13 a déjà été calculé selon adjust13Factor
 
       const Indice_Perfo  = (1 - ((Ecoul6 - Ecoul13) / Ecoul6)) * 100;
@@ -591,64 +700,51 @@
       const heuresProdSemaine = parseFloat(document.getElementById('setting_h_prod').value)        || 40;
       
       //OPEX
-
-
-      const f_matiere_premiere = C0_MP*Math.pow(1 + tauxInflation, anneesAmort);
+      const f_matiere_premiere = C0_MP * Math.pow(1 + tauxInflation, anneesAmort);
       const matiere_premiere_cad = f_matiere_premiere * tauxChangeUSDtoCAD;
 
-      const f_utilites = C0_UTILITES*Math.pow(1 + tauxInflation, anneesAmort);
+      const f_utilites = C0_UTILITES * Math.pow(1 + tauxInflation, anneesAmort);
       const utilites_cad = f_utilites * tauxChangeUSDtoCAD;
 
-      const f_mod = C0_MOD*Math.pow(1 + tauxInflation, anneesAmort);
+      const f_mod = C0_MOD * Math.pow(1 + tauxInflation, anneesAmort);
       const mod_cad = f_mod * tauxChangeUSDtoCAD;
 
-      const f_indirects = C0_INDIRECT*Math.pow(1 + tauxInflation, anneesAmort);
+      const f_indirects = C0_INDIRECT * Math.pow(1 + tauxInflation, anneesAmort);
       const indirects_cad = f_indirects * tauxChangeUSDtoCAD;
 
-      const f_admin = C0_ADMIN*Math.pow(1 + tauxInflation, anneesAmort);
+      const f_admin = C0_ADMIN * Math.pow(1 + tauxInflation, anneesAmort);
       const admin_cad = f_admin * tauxChangeUSDtoCAD;
 
-      const f_depr_cap = C0_DEPR_CAP*Math.pow(1 + tauxInflation, anneesAmort);
+      const f_depr_cap = C0_DEPR_CAP * Math.pow(1 + tauxInflation, anneesAmort);
       const depr_cap_cad = f_depr_cap * tauxChangeUSDtoCAD;
 
+      const val_depr_cap = depr_cap_cad * (temps_requis * baseOutPHB2); 
+      const val_admin = admin_cad * (temps_requis * baseOutPHB2); 
+      const val_indirects = indirects_cad * (temps_requis * baseOutPHB2); 
+      const val_mod = mod_cad * (temps_requis * baseOutPHB2); 
+      const val_utilites = utilites_cad * (temps_requis * baseOutPHB2); 
+      const val_matiere_premiere = matiere_premiere_cad * (temps_requis * baseOutPHB2); 
 
-      const val_depr_cap = depr_cap_cad * (temps_requis * baseOutPHB2); // Coût de dépréciation du capital en CAD
-      const val_admin = admin_cad * (temps_requis * baseOutPHB2); // Coût administratifs en CAD
-      const val_indirects = indirects_cad * (temps_requis * baseOutPHB2); // Coûts indirects d'exploitation en CAD
-      const val_mod = mod_cad * (temps_requis * baseOutPHB2); // Coûts MOD en CAD
-      const val_utilites = utilites_cad * (temps_requis * baseOutPHB2); // Coûts utilités en CAD
-      const val_matiere_premiere = matiere_premiere_cad * (temps_requis * baseOutPHB2); // Coût de la matière première en CAD
-
-      const OPEX = val_depr_cap + val_admin + val_indirects + val_mod + val_utilites + val_matiere_premiere; // Coût de production total en CAD
-      const somme_opex = matiere_premiere_cad + utilites_cad + mod_cad + indirects_cad + admin_cad + depr_cap_cad; // Somme des coûts en CAD
+      const OPEX = val_depr_cap + val_admin + val_indirects + val_mod + val_utilites + val_matiere_premiere;
 
       document.getElementById("Tab_Opex").innerText = `${OPEX.toFixed(2)}`;
 
       // Prix de vente du PHB
-
-      const f_prix_vente_PHB = prixVentePHB * Math.pow(1 + tauxInflation, (anneeActuelle-2010));
+      const f_prix_vente_PHB = prixVentePHB * Math.pow(1 + tauxInflation, (anneeActuelle - 2010));
       const prix_vente_PHB_cad = f_prix_vente_PHB * tauxChangeUSDtoCAD; // $/kg PHB
 
-      const prix_vente_PHB = prix_vente_PHB_cad * (temps_requis*baseOutPHB2); // Prix de vente PBH total en CAD 
+      const prix_vente_PHB_total = prix_vente_PHB_cad * (temps_requis * baseOutPHB2);
 
-      document.getElementById("Tab_PHB").innerText = `${prix_vente_PHB.toFixed(2)}`;
+      document.getElementById("Tab_PHB").innerText = `${prix_vente_PHB_total.toFixed(2)}`;
 
       // Coût d'équipement (annuité)
-
       const CAPEX = depr_cap_cad * anneesEmprunt * (temps_requis * baseOutPHB2);
-      // À placer dans calcul() une fois que vous avez récupéré dans des variables :
-      // rate   = taux périodique (par exemple 0.05 pour 5 %)
-      // n      = nombre de périodes (ex. 10)
-      // va     = valeur actuelle (par exemple C27)
-      // fv     = valeur future (généralement 0 si vous ne l’utilisez pas)
-      // type   = 0 (paiement en fin de période) ou 1 (début)
 
       let VPM;
       if (tauxInteret === 0) {
-        // Cas taux = 0 : paiement constant = (va + fv) / n
         VPM = (CAPEX) / anneesEmprunt;
       } else {
-        const numerator   = tauxInteret * (CAPEX	 * (1 + tauxInteret * 0));
+        const numerator   = tauxInteret * CAPEX;
         const denominator = 1 - Math.pow(1 + tauxInteret, -anneesEmprunt);
         VPM = numerator / denominator;
       }
@@ -656,15 +752,16 @@
       document.getElementById("Tab_Equip").innerText = `${VPM.toFixed(2)}`;
 
       // Profit Net Annuel
-      const profit_net_annuel = prix_vente_PHB - OPEX - VPM;  // Profit net annuel en CAD
+      const profit_net_annuel = prix_vente_PHB_total - OPEX - VPM;
       document.getElementById("Tab_Profit").innerText = `${profit_net_annuel.toFixed(2)}`;
 
       // Marge Bénéficiaire
-      const marge_beneficiaire = prix_vente_PHB_cad - somme_opex; // Marge bénéficiaire en $/kg PHB
+      const somme_opex = matiere_premiere_cad + utilites_cad + mod_cad + indirects_cad + admin_cad + depr_cap_cad;
+      const marge_beneficiaire = prix_vente_PHB_cad - somme_opex;
       document.getElementById("Tab_Marge").innerText = `${marge_beneficiaire.toFixed(2)}`;
 
       // Retour sur Investissement (ROI)
-      const ROI = (profit_net_annuel / CAPEX) * 100; // ROI en pourcentage
+      const ROI = (profit_net_annuel / CAPEX) * 100;
       document.getElementById("Tab_ROI").innerText = `${ROI.toFixed(2)}`;
 
       // 6) Injection des résultats dans le DOM
@@ -678,7 +775,7 @@
       document.getElementById("PHB_Ext_in").innerText    = Ecoul6.toFixed(2);
       document.getElementById("PHB_Ext_out").innerText   = Ecoul13.toFixed(2);
 
-      document.getElementById("Conv_Ferm").innerText     = conver_ferm.toFixed(2);
+      document.getElementById("Conv_Ferm").innerText     = (100).toFixed(2);
       document.getElementById("Conv_Extract").innerText  = Indice_Perfo.toFixed(2);
 
       document.getElementById("Temps_Process").innerText = `${temps_requis.toFixed(2)} heures`;
@@ -692,23 +789,20 @@
       document.getElementById("outputE13").innerText     = `${Ecoul13.toFixed(2)} kg de PHB`;
       document.getElementById("Indice_Perfo").innerText  = `Indice de performance: ${Indice_Perfo.toFixed(2)} %`;
 
-      // … votre code de calcul (OPEX, CAPEX, etc.) …
-
-    // on remplit le tableau « data » dans le même ordre que vos labels :
-    if (pieChart) {
-      pieChart.data.datasets[0].data = [
-        val_matiere_premiere,
-        val_utilites,
-        val_mod,
-        val_indirects,
-        val_admin,
-        val_depr_cap,
-        VPM,
-        profit_net_annuel
-      ];
-      pieChart.update();
-    }
-
+      // Mise à jour du pie chart
+      if (pieChart) {
+        pieChart.data.datasets[0].data = [
+          val_matiere_premiere,
+          val_utilites,
+          val_mod,
+          val_indirects,
+          val_admin,
+          val_depr_cap,
+          VPM,
+          profit_net_annuel
+        ];
+        pieChart.update();
+      }
     }
 
     /**
@@ -732,13 +826,17 @@
     }
   </script>
   <!-- Charger Chart.js depuis CDN -->
-  
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     // 1) On déclare pieChart dans la portée globale
     let pieChart = null;
 
     document.addEventListener('DOMContentLoaded', function () {
+      // Initialisation des tooltips Bootstrap
+      const tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.forEach(el => new bootstrap.Tooltip(el));
+
+      // Création du pie chart
       const ctx = document.getElementById('pieChartEconomique').getContext('2d');
       pieChart = new Chart(ctx, {
         type: 'pie',
