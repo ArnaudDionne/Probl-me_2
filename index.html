@@ -12,8 +12,48 @@
       height: 100%;
       overflow: hidden;
     }
+
+    #landing {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      
+      /* Set your uploaded image here: */
+      background-image: url('background.png');
+      background-repeat: repeat;
+      background-position: center center;
+      background-size: contain;  /* preserves aspect ratio, fills screen */
+      
+      /* Create a slight overlay if you want the form text to stand out:
+         Remove or adjust rgba(...) if you don't want an overlay */
+      background-color: rgba(255,255,255,0.4);
+      background-blend-mode: lighten;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+      transform: translateY(0);
+    }
+
+        /* Pin the H1 to the top of the landing page */
+    #landing h1 {
+      position: absolute;
+      top: 20px;               /* distance from the very top */
+      left: 50%;
+      transform: translateX(-50%);
+      color: #333;             /* adjust for contrast against your background */
+      font-size: 2rem;         /* adjust as needed */
+      font-weight: bold;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+      z-index: 4;              /* above the overlay */
+      margin: 0;               /* remove default margin */
+    }
+
     /* Common styles for all three panels */
-    #landing, #mainContent, #settingsContent {
+    #mainContent, #settingsContent {
       position: absolute;
       top: 0;
       left: 0;
@@ -21,15 +61,7 @@
       height: 100%;
       transition: transform 0.5s ease-in-out;
     }
-    /* Landing starts in view at translateY(0) */
-    #landing {
-      background-color: #f8f9fa;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 3;
-      transform: translateY(0);
-    }
+
     /* Main starts off-screen below: translateY(100%) */
     #mainContent {
       background-color: #f8f9fa;
@@ -94,6 +126,7 @@
       display: block;
       text-align: center;
     }
+    
   </style>
 </head>
 <body>
