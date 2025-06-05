@@ -246,7 +246,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <th class="text-center align-middle">Glycérol (kg)</th>
+                  <th class="text-center align-middle">Glycérol 98% (kg)</th>
                   <td
                     id="Gly_Ferm_in"
                     class="text-center align-middle"
@@ -300,24 +300,7 @@
                   >PHB_Ext_out</td>
                 </tr>
                 <tr>
-                  <th class="text-center align-middle">Taux Conversion (%)</th>
-                  <td
-                    id="Conv_Ferm"
-                    colspan="2"
-                    class="text-center align-middle"
-                    data-bs-toggle="tooltip"
-                    title="Conv_Ferm = 100% (constante)"
-                  >Conv_Ferm</td>
-                  <td
-                    id="Conv_Extract"
-                    colspan="2"
-                    class="text-center align-middle"
-                    data-bs-toggle="tooltip"
-                    title="Conv_Extract = Indice_Perfo"
-                  >Conv_Extract</td>
-                </tr>
-                <tr>
-                  <th class="text-center align-middle">Débit massique (kg/h)</th>
+                  <th class="text-center align-middle">Débit massique out (kg/h)</th>
                   <td
                     id="Debit_Ferm"
                     colspan="2"
@@ -338,29 +321,64 @@
           </div>
 
           <!-- Ligne séparée pour le Temps Procédé -->
-          <div class="table-responsive mt-3">
-            <table class="table table-bordered w-100">
-              <tbody>
-                <tr>
-                  <th class="text-center align-middle">Durée Procédé</th>
-                  <th class="text-center align-middle">Temps d'opération</th>
-                </tr>
-                <tr>
-                  <td
-                    id="Temps_Process"
-                    class="text-center align-middle"
-                    data-bs-toggle="tooltip"
-                    title="Temps_Process = quantite_PHB ÷ out_PHB_2 (ou Ecoul13 ÷ out_PHB_2 si slider)"
-                  >Temps_Process</td>
-                  <td
-                    id="Temps_Annee"
-                    class="text-center align-middle"
-                    data-bs-toggle="tooltip"
-                    title="Temps_Annee = formatTempsProduction(Temps_Process, heuresProdSemaine)"
-                  >Temps_Annee</td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="row text-center mt-3">
+            <div class="col-md-6">
+              <table class="table table-bordered w-100">
+                <thead>
+                  <tr>
+                    <th class="text-center align-middle">Durée Procédé</th>
+                    <th class="text-center align-middle">Temps d'opération</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td
+                      id="Temps_Process"
+                      class="text-center align-middle"
+                      data-bs-toggle="tooltip"
+                      title="Temps_Process = quantite_PHB ÷ out_PHB_2 (ou Ecoul13 ÷ out_PHB_2 si slider)">
+                      Temps_Process
+                    </td>
+                    <td
+                      id="Temps_Annee"
+                      class="text-center align-middle"
+                      data-bs-toggle="tooltip"
+                      title="Temps_Annee = formatTempsProduction(Temps_Process, heuresProdSemaine)">
+                      Temps_Annee
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="col-md-6">
+              <table class="table table-bordered w-100">
+                <thead>
+                  <tr>
+                    <th class="text-center align-middle">Consommation Glycérol</th>
+                    <th class="text-center align-middle">Rendement Extraction</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td
+                      id="Conv_Ferm"
+                      class="text-center align-middle"
+                      data-bs-toggle="tooltip"
+                      title="Conv_Ferm = 100% (constante)">
+                      Conv_Ferm
+                    </td>
+                    <td
+                      id="Conv_Extract"
+                      class="text-center align-middle"
+                      data-bs-toggle="tooltip"
+                      title="Conv_Extract = Indice_Perfo">
+                      Conv_Extract
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
@@ -404,7 +422,7 @@
                     >Tab_PHB</td>
                   </tr>
                   <tr>
-                    <td class="align-middle">Coût d'équipement (annuité)</td>
+                    <td class="align-middle">Remboursement du capital</td>
                     <td
                       id="Tab_Equip"
                       class="text-center align-middle"
@@ -444,9 +462,9 @@
             </div>
 
             <!-- Colonne de droite (décalée d'une colonne) : pie chart -->
-            <div class="col-md-5 offset-md-1">
-              <div style="max-width: 600px; max-height: 600px; margin: 0 auto;">
-                <canvas id="pieChartEconomique"></canvas>
+            <div class="col-md-6 offset-md-1">
+              <div style="max-width: 1000px; max-height: 1000px; margin: 0 auto;">
+                 <canvas id="pieChartEconomique" width="600" height="600"></canvas>
               </div>
             </div>
           </div>
@@ -561,8 +579,8 @@
               type="text"
               id="setting_h_prod"
               class="form-control"
-              placeholder="40"
-              value="40"
+              placeholder="168"
+              value="168"
               oninput="calcul()"
             >
           </div>
@@ -644,9 +662,9 @@
   </script>
 
   <script>
-    const out_PHB_2 = 25.6;   // base PHB-out (kg/h)
-    const out_PHB_1 = 49.12;  // base PHB-out secondaire (kg/h)
-    const in_Glycerol = 1000; // kg/h
+    const out_PHB_2 = (53*48.25)/99.9;   // base PHB-out (kg/h)
+    const out_PHB_1 = 49.124515;  // base PHB-out secondaire (kg/h)
+    const in_Glycerol = 236.81725176; // kg/h
 
     /**
     * @param {'quantite'|'slider'} source
@@ -673,10 +691,10 @@
       let temps_requis;
       if (source === 'slider') {
         // Si le slider a bougé, on recalcule le temps nécessaire pour atteindre Ecoul13 AU DÉBIT fixe out_PHB_2
-        temps_requis = Ecoul13 / baseOutPHB2;
+        temps_requis = Ecoul13 / out_PHB_2;
       } else {
         // Si c'est la quantité qui a changé, on recalcule temps par rapport à cette quantite_PHB
-        temps_requis = quantite_PHB / baseOutPHB2;
+        temps_requis = quantite_PHB / out_PHB_2;
       }
 
       // 4) Le reste des calculs reste inchangé
@@ -686,7 +704,7 @@
 
       const Indice_Perfo  = (1 - ((Ecoul6 - Ecoul13) / Ecoul6)) * 100;
 
-      const heures_prod   = parseFloat(document.getElementById('setting_h_prod').value) || 40;
+      const heures_prod   = parseFloat(document.getElementById('setting_h_prod').value) || 168;
       const Temps_Annee   = formatTempsProduction(temps_requis, heures_prod);
 
       // 5) Calculs Economiques
@@ -694,7 +712,7 @@
       const tauxInflation     = parseFloat(document.getElementById('setting_inflation').value)     || 0.0231;
       const anneesAmort       = parseInt  (document.getElementById('setting_amort').value)         || 15;
       const anneesEmprunt     = parseInt  (document.getElementById('setting_emprunt').value)       || 10;
-      const prixVentePHB      = parseFloat(document.getElementById('setting_prix_PHB').value)      || -2.6;
+      const prixVentePHB      = parseFloat(document.getElementById('setting_prix_PHB').value)      || 2.6;
       const anneeActuelle     = parseInt  (document.getElementById('setting_annee').value)         || new Date().getFullYear();
       const tauxChangeUSDtoCAD= parseFloat(document.getElementById('setting_taux_change').value)   || 1.38;
       const heuresProdSemaine = parseFloat(document.getElementById('setting_h_prod').value)        || 40;
@@ -775,8 +793,8 @@
       document.getElementById("PHB_Ext_in").innerText    = Ecoul6.toFixed(2);
       document.getElementById("PHB_Ext_out").innerText   = Ecoul13.toFixed(2);
 
-      document.getElementById("Conv_Ferm").innerText     = (100).toFixed(2);
-      document.getElementById("Conv_Extract").innerText  = Indice_Perfo.toFixed(2);
+      document.getElementById("Conv_Ferm").innerText     = `${(100).toFixed(2)} %`;
+      document.getElementById("Conv_Extract").innerText  = `${Indice_Perfo.toFixed(2)} %`;
 
       document.getElementById("Temps_Process").innerText = `${temps_requis.toFixed(2)} heures`;
       document.getElementById("Temps_Annee").innerText   = Temps_Annee;
@@ -798,8 +816,7 @@
           val_indirects,
           val_admin,
           val_depr_cap,
-          VPM,
-          profit_net_annuel
+          VPM
         ];
         pieChart.update();
       }
@@ -827,9 +844,12 @@
   </script>
   <!-- Charger Chart.js depuis CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
   <script>
     // 1) On déclare pieChart dans la portée globale
     let pieChart = null;
+    Chart.register(ChartDataLabels);
 
     document.addEventListener('DOMContentLoaded', function () {
       // Initialisation des tooltips Bootstrap
@@ -848,12 +868,11 @@
             'Coûts indirects',
             'Coût admin',
             'Coût dépréc capital',
-            'Coût équipement',
-            'Profit net annuel'
+            'Coût équipement'
           ],
           datasets: [{
             //  On met un tableau « vide » ou des zéros par défaut, on remplacera à calcul()
-            data: [0, 0, 0, 0, 0, 0, 0, 0],
+            data: [0, 0, 0, 0, 0, 0, 0],
             backgroundColor: [
               '#007bff',
               '#28a745',
@@ -861,8 +880,7 @@
               '#ffc107',
               '#17a2b8',
               '#6f42c1',
-              '#e83e8c',
-              '#fd7e14'
+              '#e83e8c'
             ]
           }]
         },
@@ -871,7 +889,7 @@
           plugins: {
             legend: {
               position: 'bottom',
-              labels: { boxWidth: 12, padding: 8 }
+              labels: { boxWidth: 15, padding: 8 }
             },
             tooltip: {
               callbacks: {
@@ -881,7 +899,18 @@
                   return context.label + ': ' + value.toLocaleString() + ' CAD';
                 }
               }
+            },
+            title: {
+            display: true,
+            text: 'Distribution des coûts annuels'  // Change this to whatever you like
+          },
+          datalabels: {
+            color: '#ffffff',
+            formatter: (value, ctx) => {
+              const sum = ctx.chart.data.datasets[0].data.reduce((a,b) => a+b, 0);
+              return (value * 100 / sum).toFixed(1) + '%';
             }
+          }
           }
         }
       });
