@@ -126,12 +126,25 @@
       display: block;
       text-align: center;
     }
+    #landingSettingsButton {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 4;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #0d6efd;
+      cursor: pointer;
+    }
+    #landingSettingsButton:focus { outline: none; }
     
   </style>
 </head>
 <body>
   <!-- Landing Page -->
   <div id="landing">
+    <button id="landingSettingsButton">⚙️</button>
     <div style="width: 90%; max-width: 800px; text-align: center;">
       <h1 class="mb-4">Pour notre ami, typiquement entrepreneur</h1>
       <div class="landing-box p-4 bg-white rounded shadow-sm">
@@ -639,6 +652,7 @@
     const backButton      = document.getElementById('backButton');
     const settingsButton  = document.getElementById('settingsButton');
     const settingsBackBtn = document.getElementById('settingsBackButton');
+    const landingSettingsButton = document.getElementById('landingSettingsButton');
     const errorLabel      = document.getElementById('error');
     const qtInput         = document.getElementById('qt_PHB');
 
@@ -648,6 +662,7 @@
     const C0_INDIRECT = 0.210;  // Coûts indirects d'exploitation
     const C0_ADMIN    = 0.186;  // Coût administratifs
     const C0_DEPR_CAP = 0.668;  // Coût de dépréciation du capital
+    let lastView = 'landing';
 
     function showError(msg) {
       errorLabel.innerText = msg;
@@ -656,6 +671,7 @@
       errorLabel.innerText = '';
     }
 
+    
     // 1) Go button: Landing → Main, avec validation
     goButton.addEventListener('click', () => {
       const quantite_PHB = parseFloat(qtInput.value);
@@ -673,6 +689,13 @@
       settingsEl.style.transform = 'translateY(200%)';
     });
 
+    landingSettingsButton.addEventListener('click', () => {
+      lastView = 'landing';
+      clearError();
+      landingEl.style.transform = 'translateY(-100%)';
+      settingsEl.style.transform = 'translateY(0)';
+    });
+
     // 2) Back arrow on Main: Main → Landing
     backButton.addEventListener('click', () => {
       clearError();
@@ -683,22 +706,33 @@
 
     // 3) Settings button on Main: Main → Settings
     settingsButton.addEventListener('click', () => {
+      lastView = 'main';
       clearError();
-      mainEl.style.transform     = 'translateY(-100%)';
+      mainEl.style.transform = 'translateY(-100%)';
       settingsEl.style.transform = 'translateY(0)';
     });
 
-    // 4) Back arrow on Settings: Settings → Main
     settingsBackBtn.addEventListener('click', () => {
       clearError();
-      mainEl.style.transform     = 'translateY(0)';
+      if (lastView === 'landing') {
+        landingEl.style.transform = 'translateY(0)';
+        mainEl.style.transform = 'translateY(100%)';
+        settingsEl.style.transform = 'translateY(200%)';
+      } else {
+        mainEl.style.transform = 'translateY(0)';
+        settingsEl.style.transform = 'translateY(200%)';
+      }
+    });
+
+    // 4) Back arrow on Settings: Settings → Main
+    backButton.addEventListener('click', () => {
+      clearError();
+      landingEl.style.transform = 'translateY(0)';
+      mainEl.style.transform = 'translateY(100%)';
       settingsEl.style.transform = 'translateY(200%)';
     });
 
-    // Prevent scroll on landing
-    landingEl.addEventListener('wheel', function(e) {
-      e.preventDefault();
-    }, { passive: false });
+    landingEl.addEventListener('wheel', e => e.preventDefault(), { passive: false });
   </script>
 
   <script>
